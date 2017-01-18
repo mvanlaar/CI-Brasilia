@@ -161,15 +161,29 @@ namespace CI_Brasilia
                 // End Route Parsing
             });
 
+            // Export Stops
+            var Cities = _RoutesDetails.Select(m => new { m.CIUDADN }).Distinct().ToList();
+
+            // You'll do something else with it, here I write it to a console window
+            // Console.WriteLine(text.ToString());
+            Console.WriteLine("Export City into XML...");
+            // Write the list of objects to a file.
+            System.Xml.Serialization.XmlSerializer writerCities = new System.Xml.Serialization.XmlSerializer(Cities.GetType());
+            string myDir = AppDomain.CurrentDomain.BaseDirectory + "\\output";
+            System.IO.Directory.CreateDirectory(myDir);
+
+            System.IO.StreamWriter fileCities = new System.IO.StreamWriter("output\\Cities.xml");
+
+            writerCities.Serialize(fileCities, Cities);
+            fileCities.Close();
+
             // You'll do something else with it, here I write it to a console window
             // Console.WriteLine(text.ToString());
             Console.WriteLine("Export Routes into XML...");
             // Write the list of objects to a file.
             System.Xml.Serialization.XmlSerializer writerRoutes =
             new System.Xml.Serialization.XmlSerializer(_Routes.GetType());
-            string myDir = AppDomain.CurrentDomain.BaseDirectory + "\\output";
-            System.IO.Directory.CreateDirectory(myDir);
-
+            
             System.IO.StreamWriter fileRoutes =
                 new System.IO.StreamWriter("output\\routes.xml");
 
