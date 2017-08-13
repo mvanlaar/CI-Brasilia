@@ -1,0 +1,2006 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Venta de Tiquetes</title>
+
+    <meta charset="utf-8" />
+    <meta name="description" />
+    <meta content="True" name="HandheldFriendly" />
+    <meta content="320" name="MobileOptimized" />
+    <meta content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0" name="viewport" />
+    <meta content="on" http-equiv="cleartype" />
+    <link href="..resources/imagenes/touch/apple-touch-icon-144x144-precomposed.png" rel="apple-touch-icon-precomposed" sizes="144x144" />
+    <link href="..resources/imagenes/touch/apple-touch-icon-114x114-precomposed.png" rel="apple-touch-icon-precomposed" sizes="114x114" />
+    <link href="..resources/imagenes/touch/apple-touch-icon-72x72-precomposed.png" rel="apple-touch-icon-precomposed" sizes="72x72" />
+    <link href="..resources/imagenes/touch/apple-touch-icon-57x57-precomposed.png" rel="apple-touch-icon-precomposed" />
+    <link href="/..resources/imagenes/touch/apple-touch-icon.png" rel="shortcut icon" />
+    <meta content="..resources/imagenes/touch/apple-touch-icon-144x144-precomposed.png" name="msapplication-TileImage" />
+    <meta content="#222222" name="msapplication-TileColor" />
+    <link href="..resources/imagenes/startup/startup-retina-4in.png" media="(device-height: 568px)" rel="apple-touch-startup-image" />
+    <link href="..resources/imagenes/startup/startup-retina.png" media="(device-height: 480px)" rel="%apple- touch-startup-image" sizes="640x920" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="apple-mobile-web-app-title" />
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css" />
+
+
+
+
+
+    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css" />
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.mobile-1.3.1.min.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=javascripts"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/application-mobile.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=javascripts"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/modernizr-2.6.2.min.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=javascripts"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.custom.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.selectbox.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.timer.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jquery.autocomplete.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/graphics.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.graphics"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/tinyscrollbar.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jformsScriptPath.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jforms.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/keys-mappings.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/jcomponent.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/textfield.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/textArea.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/button.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/radioButton.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/comboBox.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/checkBox.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/label.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/upload.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/scrollbar.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/lov.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/flexigrid.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.jquery"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/autocompleteCaller.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js.aspsols.jforms.components"></script>
+    <script type="text/javascript" src="/TiquetePW/faces/javax.faces.resource/brasilia-custom.js;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=js"></script>
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/jquery.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/gazelle.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/scrollbar.default.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/frames.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/combobox.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/jquery.selectbox.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/TIQW002.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=css" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/scrollbar.default.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=defaultCss" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/ventawebmobile.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=css" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/ventaweb.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=css" />
+    <link type="text/css" rel="stylesheet" href="/TiquetePW/faces/javax.faces.resource/application.css;jsessionid=42D9BE852AB75A8CBF1F0DE5BA7D51BB?ln=css" />
+</head>
+<body>
+    <div class="landing general-content" data-role="page">
+        <div data-role="content">
+            <script>
+    $(window).bind('beforeunload',function(){
+                                     jform.disposeBean('tIQW002Controller');
+                                  });
+            </script>
+            <script>
+  $(document).ready(function() {
+    var du=2000;
+    $(document).tooltip({
+					  track:true,
+					  open: function( event, ui ) {
+					      setTimeout(function(){
+					      $(ui.tooltip).hide();
+					   }, du);
+					  }
+					}
+  ).off("focusin focusout");
+ });
+            </script>
+            <div id=ask-commit-alert>
+                <p></p>
+            </div>
+            <script>
+$(document).ready(
+    function(){
+        $("#ask-commit-alert").dialog({
+                                            "width"     : 350,
+                                            "height"    : 150,
+                                            "modal"     : true,
+                                            "resizable" : false,
+                                            "title"     : "Commit changes?",
+                                            "draggable" : true,
+                                            "show"      : "fade",
+                                            "hide"      : "fade",
+                                            "autoOpen"  : false,
+                                            "open"      : function(event,ui){
+
+                                                          },
+                                            "buttons"   : [{
+                                                            text  : "OK",
+                                                            click : function() {
+                                                                        $(this).dialog("close");
+                                                                        jform.performAlertResponseRequest("tIQW002Controller", "ask-commit-alert","0");
+                                                                    }
+                                                          },
+                                                          {
+                                                            text  : "Cancel",
+                                                            click : function() {
+                                                                        $(this).dialog("close");
+                                                                        jform.performAlertResponseRequest("tIQW002Controller", "ask-commit-alert","1");
+                                                                    }
+                                                          }]
+                                      });
+             }
+);
+            </script>
+            <div id='error-message' class='error message'><h3 id='error-message-text'></h3><p id='error-stack-trace'></p></div>
+            <div class="results-content cf">
+                <div class="landing-header general-page" data-position="absolute" data-role="header" data-tap-toggle="false" data-transition="none">
+                    <div style="width: 10% ; display: inline-block;text-align: center;">
+                        <a data-rel="back">
+                            <i class="header-icon br-icon-arrow"></i>
+                        </a>
+                    </div>
+                    <div style="width: 80%; display: inline-block;">
+                        <h1>
+                            <img src="../resources/imagenes/app-logo.png" />
+                        </h1>
+                    </div>
+                    <div style="width: 5%; display: inline-block">
+                        <input type="button" value="" data-role="none" class="header-icon  bras-btn-home " id="jforms[tIQW002Controller-control-inicio-0]" style="position:relative;width:20px;height:30px;text-align:center;text-transform:none;display:inline-block;" />
+                    </div>
+                </div><label class=" element-sin-borde display-block " id="jforms[tIQW002Controller-control-title-0]" style="position:relative;height:70px;text-align:left;text-transform:normal;font:normal 12px Arial;display:block;white-space:pre;background:#ffffff;color:#000000;"><h2 class='title-content'>VIAJE DE IDA</h2></label><div id="jforms.panel[tIQW002Controller-PanelPpal]" class="content-panel PanelPpal" style="position:relative;width:100%;overflow:hidden;display:block;">
+
+
+                    <div class="app-container-mobile">
+                        <div class="wrapper-ppal-mobile">
+
+                            <div style="padding-left: 10px; padding-right: 10px">
+                                <div class="place-date-container soft-tb--margin"><label class=" element-sin-borde display-block margen-izq-20 " id="jforms[tIQW002Controller-control-infoviaje-0]" style="position:relative;text-align:left;text-transform:normal;font:normal 12px Arial;display:block;white-space:pre;background:#ffffff;color:#000000;"><div class='item--place-date double-line--blue'><div class='media'> <div class='img'> <i class='br-icon-place'></i> </div><div class='bd sb'>MONTERIA - CARTAGENA</div></div></div> <div class='item--place-date'>  <div class='media'>  <div class='img'>   <i class='br-icon-date'></i></div> <div class='bd'> Martes, 22 de Agosto del 2017 </div> </div></div></div></label>
+                            </div>
+                        </div><div style="position:relative;display:block;z-index:2;" id="jforms.panel[tIQW002Controller-Tarifas]">
+
+                            <div style="width: 100%;">
+                                <div style="display: none;">
+                                    <label id="jforms[prompt-tIQW002Controller-control-navegacion-0]" for="jforms[tIQW002Controller-control-navegacion-0]" class="null">navegacion</label><input type="text" placeholder="" class=" " id="jforms[tIQW002Controller-control-navegacion-0]" tabIndex="0" style="position:relative;height:20px;text-align:left;text-transform:normal;font:normal 12px Arial;display:block;" />
+                                </div>
+
+                                <div style="padding: 10px">
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 0500
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    05:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    10:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-0" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394544348', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-0">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 0600
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    06:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    11:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-1" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394559573', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-1">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 0630
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    06:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    12:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-2" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394573123', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-2">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 0715
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    07:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    12:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-3" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394588558', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-3">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 0730
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    07:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    13:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-4" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394390278', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-4">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 0815
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    08:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    13:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-5" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394604202', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-5">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 0900
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    09:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    14:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-6" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394618450', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-6">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 0915
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    09:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    15:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-7" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394436094', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-7">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1000
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    10:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    15:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-8" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394631999', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-8">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 1030
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    10:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    16:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-9" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394452786', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-9">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1045
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    10:45
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    16:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-10" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394468221', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-10">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1130
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    11:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    16:45
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-11" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394645827', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-11">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 1215
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    12:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    18:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-12" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394484354', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-12">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1230
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    12:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    17:45
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-13" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394500418', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-13">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1315
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    13:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    18:30
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-14" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394660913', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-14">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3302A - 1400
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    14:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    19:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-15" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394675021', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-15">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3312 - 1415
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    14:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    20:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-16" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394513967', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-16">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 1500
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    15:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    20:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-17" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394689129', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-17">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 1600
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOPREMIUMEC.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    16:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    21:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-18" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394529053', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-18">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>48,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='route-widget'>
+                                        <div class='route-container'>
+                                            <div class='route-top-content'>
+                                                <div class='route-header'>
+                                                    <div class='push-half--sides cf'>
+                                                        <div class='half'>
+                                                            <h3 class='red'>
+                                                                Ruta
+                                                                <span>
+                                                                    3331B - 1700
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <img class="logo-route" src="/TiquetePW/faces/javax.faces.resource/images/logos/LOGOUN.png" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class='route-body soft-half--sides'>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Salida:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    17:00
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class='route-item split cf'>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Llegada:
+                                                                <span>
+                                                                    22/08/2017
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class='half'>
+                                                            <h3>
+                                                                Hora:
+                                                                <span>
+                                                                    22:15
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class='route-arrow-container js-toogle-button'>
+                                                <i class='br-icon-arrow'></i>
+                                            </div>
+                                        </div>
+                                        <div class='route-extra-container '>
+                                            <div class='push-half cf'>
+                                                <div class='extra-top'>
+
+                                                    <div class='extra-item '>
+                                                        <div class='half'>
+                                                            <div class='sixth'>
+                                                                <label class='checkbox radio rt-radio'>
+                                                                    <input data-role='none' id="route-1-19" name='route' type='radio' onclick="seleccionaTarifa('tIQW002Controller','viajes', '304450394703167', 1);">
+                                                                    <span></span>
+                                                                </label>
+                                                            </div>
+                                                            <div class='fivesixth'>
+                                                                <label for="route-1-19">
+                                                                    <span class='rt-title'> Tarifa </span>
+                                                                    <br>
+                                                                    <span class='rt-price'>40,000 </span>
+                                                                    <br>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="field alingCenter padding-10">
+                                    <input type="button" value="Siguiente" data-role="none" class=" bras-button-red display-inline-block " id="jforms[tIQW002Controller-control-siguiente-0]" style="position:relative;width:100%;height:50px;text-align:center;text-transform:none;" />
+                                </div>
+
+
+                                <div style="height: 30px; background: white;"></div><div class="scrollable" id="jforms.scrollbar[tIQW002Controller-control]" orientation="vertical" style="position:null;width:1px;height:100px;top:0px;left:0px;display:none;"><div class="vscroller"><div class="scrollarea" name="scroll-area"><div class="scrollblock" style="height:-5px;top:-1px;width:-4px;" name="scroll-block"></div></div><div class="scrollbtn scrolltop" name="top-button" style="width:1px;"></div><div class="scrollbtn scrolldown" name="bottom-button" style="width:1px;"></div></div></div>
+                            </div>
+                        </div><div style="position:relative;display:none;z-index:1;" id="jforms.panel[tIQW002Controller-Mensaje]">
+                            <div class="wrapper">
+                                <div class="text-agreement">
+                                    <label class=" element-sin-borde display-block padding-10 " id="jforms[tIQW002Controller-control-mensaje-0]" style="position:relative;text-align:left;text-transform:normal;display:block;white-space:pre;background:#ffffff;"></label>
+
+                                </div>
+                                <div class="field nuevaBusqueda">
+                                    <input type="button" value="Aceptar" data-role="none" class="enviarTiquete bras-button-red " id="jforms[tIQW002Controller-control-aceptar-0]" style="position:relative;width:100%;height:50px;text-align:center;text-transform:none;" />
+                                </div>
+
+                            </div>
+                        </div><div style="position:relative;display:none;z-index:1;" id="jforms.panel[tIQW002Controller-Contrato]">
+
+                            <div class="wrapper">
+                                <div class="text-agreement">
+                                    <label class=" element-sin-borde display-block " id="jforms[tIQW002Controller-control-contrato-0]" style="position:relative;text-align:left;text-transform:normal;display:block;white-space:pre;background:#ffffff;"></label>
+
+                                </div>
+                                <div class="field padding-bottom-10">
+                                    <input type="button" value="Ok" data-role="none" class=" bras-button-red-mobile bras-button-home " id="jforms[tIQW002Controller-control-btnok-0]" style="position:relative;width:100%;height:45px;text-align:center;text-transform:none;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dialogs -->
+
+        </div>
+        <div data-role="footer">
+            <div class="footer-content">
+                <div class="wrapper">
+                    <div class="foter-top cf">
+                        <div class="half">
+                            <img class="super-trans" src="../resources/imagenes/misc/super-transporte.png" />
+                        </div>
+                        <div class="half">
+                            <img class="pagos-online" src="../resources/imagenes/misc/pagos-online.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="foter-bottom cf">
+                    <div class="foter-bottom-top">
+                        <div class="half">
+                            <div class="footer-item">
+                                <label class=" element-sin-borde display-block link " id="jforms[tIQW002Controller-control-btncontrato-0]" style="position:relative;height:20px;text-align:left;text-transform:normal;font:normal 12px Arial;display:block;white-space:pre;background:#ffffff;">Contrato de transporte</label>
+
+                                <span class="border-divider" style="top: -19px;">
+                                    I
+                                </span>
+                            </div>
+                        </div>
+                        <div class="half last">
+                            <div class="footer-item">
+                                <label class=" element-sin-borde display-block link " id="jforms[tIQW002Controller-control-btnversionweb-0]" style="position:relative;height:20px;text-align:left;text-transform:normal;font:normal 12px Arial;display:block;white-space:pre;background:#ffffff;">Versión web</label>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="copy-content">
+                <p>Todos los derechos reservados Expreso Brasilia S.A.</p>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</body>
+</html>

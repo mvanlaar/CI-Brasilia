@@ -1,0 +1,57 @@
+﻿/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT DISTINCT [ROUTENR]
+      ,[TRAMOS]
+      ,[EMPRESA]
+      ,[EMPRESAN]
+      ,[AGENCIA]
+      ,[AGENCIAN]
+      ,[CIUDADN]
+      ,[DEPARTAMENTON]
+      ,[PAISN]
+      ,[KILOMETROS]
+      ,[MINUTOS]
+      ,[Origen_Ciudad_ID]
+      ,[Destino_Ciudad_ID]
+      ,[Origen_Ciudad_Nombre]
+      ,[Destino_Ciudad_Nombre]
+  FROM [ColombiaInfo-Data].[dbo].[BrasiliaRoutes]
+  where exists (  select 1 from ( select ROUTENR, max(TRAMOS) as TRAMOS
+                                from [BrasiliaRoutes]
+                                group by ROUTENR
+                              ) as cond
+                where [BrasiliaRoutes].ROUTENR=cond.ROUTENR 
+                and [BrasiliaRoutes].TRAMOS =cond.TRAMOS
+                
+             )
+order by ROUTENR, TRAMOS, KILOMETROS
+
+select distinct Paisn
+from [ColombiaInfo-Data].[dbo].[BrasiliaRoutes]
+
+SELECT DISTINCT [ROUTENR]
+      ,[TRAMOS]
+      ,[EMPRESA]
+      ,[EMPRESAN]
+      ,[AGENCIA]
+      ,[AGENCIAN]
+      ,[CIUDADN]
+      ,[DEPARTAMENTON]
+      ,[PAISN]
+      ,[KILOMETROS]
+      ,[MINUTOS]
+      ,[Origen_Ciudad_ID]
+      ,[Destino_Ciudad_ID]
+      ,[Origen_Ciudad_Nombre]
+      ,[Destino_Ciudad_Nombre]
+  FROM [ColombiaInfo-Data].[dbo].[BrasiliaRoutes]
+  where exists (  select 1 from ( select ROUTENR, max(TRAMOS) as TRAMOS
+                                from [BrasiliaRoutes]
+                                group by ROUTENR
+                              ) as cond
+                where [BrasiliaRoutes].ROUTENR=cond.ROUTENR 
+                and [BrasiliaRoutes].TRAMOS =cond.TRAMOS
+                
+             ) AND [BrasiliaRoutes].KILOMETROS = 0
+order by ROUTENR, TRAMOS
+
+

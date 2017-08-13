@@ -1,0 +1,27 @@
+﻿/****** Object:  Table [dbo].[BrasiliaRoutes]    Script Date: 13-8-2017 20:59:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[BrasiliaRoutes](
+	[ROUTENR] [nvarchar](10) NULL,
+	[TRAMOS] [tinyint] NULL,
+	[EMPRESA] [nvarchar](255) NULL,
+	[EMPRESAN] [nvarchar](255) NULL,
+	[AGENCIA] [nvarchar](255) NULL,
+	[AGENCIAN] [nvarchar](255) NULL,
+	[CIUDADN] [nvarchar](255) NULL,
+	[DEPARTAMENTON] [nvarchar](255) NULL,
+	[PAISN] [nvarchar](255) NULL,
+	[KILOMETROS] [int] NULL,
+	[MINUTOS] [int] NULL,
+	[Origen_Ciudad_ID] [int] NULL,
+	[Destino_Ciudad_ID] [int] NULL,
+	[Origen_Ciudad_Nombre] [nvarchar](255) NULL,
+	[Destino_Ciudad_Nombre] [nvarchar](255) NULL
+) ON [PRIMARY]
+
+GO
+
