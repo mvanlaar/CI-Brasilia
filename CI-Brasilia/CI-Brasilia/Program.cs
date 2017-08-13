@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -425,7 +426,32 @@ namespace CI_Brasilia
                 Stage7 = reader.ReadToEnd();
             }
 
-            Console.WriteLine(Stage7);
+            var doc = new HtmlDocument();
+            doc.LoadHtml(Stage7);
+
+            var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
+
+            foreach(var route in routes)
+            {
+                string routenr = route.SelectSingleNode("./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]").InnerText;
+                routenr = routenr.Trim();
+                Console.WriteLine(routenr);
+            }
+
+
+            
+
+            // Parse Response Stage 7
+
+            // Select all divs with the class route-widget
+
+            // Parse route number
+
+            // Is this the route number that we know? 
+            // No? Hmm
+            // Yes Ok parse the begin and end time. Parse the day of arrival
+            // use the stops we kno to create the route.
+            // Save the files.
 
             //// Export Stops
             //var Cities = _RoutesDetails.Select(m => new { m.CIUDADN }).Distinct().ToList();
