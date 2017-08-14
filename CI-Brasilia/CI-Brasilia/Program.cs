@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Globalization;
 using System.Threading;
+using CsvHelper;
+using System.Text;
+using System.Web;
 
 namespace CI_Brasilia
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -283,6 +286,33 @@ namespace CI_Brasilia
             }
             // Get the route information:
 
+            // TEMP
+            // TODO:
+            string gtfsDir = AppDomain.CurrentDomain.BaseDirectory + "\\gtfs";
+            System.IO.Directory.CreateDirectory(gtfsDir);
+            //using (
+            var gtfstrips = new StreamWriter(@"gtfs\\trips.txt");//)
+            //{
+
+                var csvtrips = new CsvWriter(gtfstrips);
+                csvtrips.Configuration.Delimiter = ",";
+                csvtrips.Configuration.Encoding = Encoding.UTF8;
+                csvtrips.Configuration.TrimFields = true;
+                // header 
+                csvtrips.WriteField("route_id");
+                csvtrips.WriteField("service_id");
+                csvtrips.WriteField("trip_id");
+                csvtrips.WriteField("trip_headsign");
+                csvtrips.WriteField("trip_short_name");
+                csvtrips.WriteField("direction_id");
+                csvtrips.WriteField("block_id");
+                csvtrips.WriteField("shape_id");
+                csvtrips.WriteField("wheelchair_accessible");
+                csvtrips.WriteField("bikes_allowed ");
+                csvtrips.NextRecord();
+           // }
+
+
             using (SqlConnection connection =
                 new SqlConnection("Server=127.0.0.1;Database=ColombiaInfo-Data;User Id=Mule;Password=P@ssw0rd;"))
             {
@@ -313,8 +343,7 @@ namespace CI_Brasilia
                     where[BrasiliaRoutes].ROUTENR=cond.ROUTENR
                     and[BrasiliaRoutes].TRAMOS =cond.TRAMOS
                 
-                        ) AND[BrasiliaRoutes].KILOMETROS = 0
-                          AND ROUTENR = '0209'
+                        ) AND[BrasiliaRoutes].KILOMETROS = 0                          
                     order by ROUTENR, TRAMOS";
 
 
@@ -329,19 +358,25 @@ namespace CI_Brasilia
                                 string from = (string) rdr["Origen_Ciudad_Nombre"];
                                 string to = (string) rdr["Destino_Ciudad_Nombre"];
                                 string dbroutenr = (string) rdr["ROUTENR"];
-
+                                
                                 if (from.Contains("-"))
                                 {
                                     // Split by - use only first part
-                                    string[] temp = from.Split('-');
-                                    from = temp[0];
+                                    if (!from.Contains("TULUA -") | !from.Contains("CARTAGO -"))
+                                    {
+                                        string[] temp = from.Split('-');
+                                        from = temp[0];
+                                    }
 
                                 }
                                 if (to.Contains("-"))
                                 {
-                                    // Split by - use only first part
-                                    string[] temp = to.Split('-');
-                                    to = temp[0];
+                                // Split by - use only first part handle execption 
+                                    if (!to.Contains("TULUA -") | !to.Contains("CARTAGO -"))
+                                    {                                        
+                                        string[] temp = to.Split('-');
+                                        to = temp[0];
+                                    }
 
                                 }
 
@@ -427,7 +462,7 @@ namespace CI_Brasilia
                                 string s3Request =
                                     string.Format(
                                         "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-destino-0]&value={0}&currentField=jforms[tIQW001Controller-compra-origen-0]",
-                                        from);
+                                        HttpUtility.UrlEncode(from));
                                 request = (HttpWebRequest) WebRequest.Create(s3Request);
                                 request.Method = "GET";
                                 request.ContentType = "application/json; charset=utf-8";
@@ -455,7 +490,7 @@ namespace CI_Brasilia
                                 string s4Request =
                                     string.Format(
                                         "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-f_ida-0]&value={0}&currentField=jforms[tIQW001Controller-compra-destino-0]",
-                                        to);
+                                        HttpUtility.UrlEncode(to));                                
                                 request = (HttpWebRequest) WebRequest.Create(s4Request);
                                 request.Method = "GET";
                                 request.ContentType = "application/json; charset=utf-8";
@@ -511,7 +546,7 @@ namespace CI_Brasilia
                                     Stage5 = reader.ReadToEnd();
                                 }
 
-                                Console.WriteLine(Stage5);
+                                //Console.WriteLine(Stage5);
 
                                 // Stage 6
                                 request = (HttpWebRequest) WebRequest.Create(
@@ -543,74 +578,87 @@ namespace CI_Brasilia
 
                                 dynamic Stage5Response = JsonConvert.DeserializeObject(Stage5);
 
-                                string RedirectUrl = Stage5Response.jforms.webShowDocument[0].urlOpen.ToString();
-
-                                if (!RedirectUrl.Contains("NOAVAILABLE.xhtml"))
+                                if (Stage5Response.jforms.webShowDocument != null)
                                 {
-                                    request = (HttpWebRequest) WebRequest.Create(RedirectUrl);
-                                    request.Method = "GET";
-                                    //request.ContentType = "application/json; charset=utf-8";
-                                    request.UserAgent = uamobile;
-                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                    //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                    request.Accept =
-                                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-                                    request.AutomaticDecompression =
-                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                    request.CookieContainer = cookieContainer;
-                                    request.Proxy = null;
-                                    request.Referer =
-                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                    //using (var streamIndex = request.GetRequestStream())
-                                    //{
-                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                    //}
-                                    string Stage7 = String.Empty;
-                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    string RedirectUrl = Stage5Response.jforms.webShowDocument[0].urlOpen.ToString();
+
+                                    if (!RedirectUrl.Contains("NOAVAILABLE.xhtml"))
                                     {
-                                        Stage7 = reader.ReadToEnd();
-                                    }
+                                        request = (HttpWebRequest)WebRequest.Create(RedirectUrl);
+                                        request.Method = "GET";
+                                        //request.ContentType = "application/json; charset=utf-8";
+                                        request.UserAgent = uamobile;
+                                        request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                        //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                        request.Accept =
+                                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+                                        request.AutomaticDecompression =
+                                            DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                        request.CookieContainer = cookieContainer;
+                                        request.Proxy = null;
+                                        request.Referer =
+                                            "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                        //using (var streamIndex = request.GetRequestStream())
+                                        //{
+                                        //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                        //}
+                                        string Stage7 = String.Empty;
+                                        using (HttpWebResponse responseIndex = (HttpWebResponse)request.GetResponse())
+                                        using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                        {
+                                            Stage7 = reader.ReadToEnd();
+                                        }
 
-                                    var doc = new HtmlDocument();
-                                    doc.LoadHtml(Stage7);
+                                        var doc = new HtmlDocument();
+                                        doc.LoadHtml(Stage7);
 
-                                    var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
+                                        var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
 
-                                    foreach (var route in routes)
-                                    {
-                                        string routenrwithtime =
-                                            route.SelectSingleNode("./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
+                                        foreach (var route in routes)
+                                        {
+                                            string routenrwithtime =
+                                                route.SelectSingleNode("./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string[] routenrwithtimeparts = routenrwithtime.Split('-');
+                                            String RouteNr = routenrwithtimeparts[0];
+                                            string TimeofDay = routenrwithtimeparts[1];
+                                            RouteNr = RouteNr.Trim();
+                                            TimeofDay = TimeofDay.Trim();
+                                            // First part if departure
+                                            string daySalida = route
+                                                .SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
                                                 .InnerText.Trim();
-                                        string[] routenrwithtimeparts = routenrwithtime.Split('-');
-                                        String RouteNr = routenrwithtimeparts[0];
-                                        string TimeofDay = routenrwithtimeparts[1];
-                                        RouteNr = RouteNr.Trim();
-                                        TimeofDay = TimeofDay.Trim();
-                                        // First part if departure
-                                        string daySalida = route
-                                            .SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
-                                            .InnerText.Trim();
-                                        string hourSalida =
-                                            route.SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        string dayLlegada =
-                                            route.SelectSingleNode("./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        string hourLlegada =
-                                            route.SelectSingleNode("./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        DateTime datetimeSalida = DateTime.MinValue;
-                                        string datetimeSalidastring = daySalida + " " + hourSalida;
-                                        datetimeSalida = DateTime.ParseExact(datetimeSalidastring, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                        DateTime datetimeLlegada = DateTime.MinValue;
-                                        string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
-                                        datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                        bool NextdayArrival = datetimeSalida.Date != datetimeLlegada.Date;
+                                            string hourSalida =
+                                                route.SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string dayLlegada =
+                                                route.SelectSingleNode("./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string hourLlegada =
+                                                route.SelectSingleNode("./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            DateTime datetimeSalida = DateTime.MinValue;
+                                            string datetimeSalidastring = daySalida + " " + hourSalida;
+                                            datetimeSalida = DateTime.ParseExact(datetimeSalidastring, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                            DateTime datetimeLlegada = DateTime.MinValue;
+                                            string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
+                                            datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                            string tripdid = RouteNr + TimeofDay + requestdate.ToString("ddMMyyyy");
+                                            _RoutesDetails.Add(new CIBusRoutesDetails
+                                            {
+                                                RouteNr = RouteNr,
+                                                TripNr = tripdid,
+                                                Salida = datetimeSalida,
+                                                Llegeda = datetimeLlegada
+                                            });
 
-                                        string tripdid = RouteNr + TimeofDay + requestdate.ToString("ddMMyyyy");
 
-                                        Console.WriteLine(RouteNr);
+
+
+
+
+
+                                        }
                                     }
                                 }
                             }
@@ -628,7 +676,44 @@ namespace CI_Brasilia
 
 
 
+                //bool NextdayArrival = datetimeSalida.Date != datetimeLlegada.Date;
+                //Boolean TEMP_FlightMonday = false;
+                //Boolean TEMP_FlightTuesday = false;
+                //Boolean TEMP_FlightWednesday = false;
+                //Boolean TEMP_FlightThursday = false;
+                //Boolean TEMP_FlightFriday = false;
+                //Boolean TEMP_FlightSaterday = false;
+                //Boolean TEMP_FlightSunday = false;
 
+                //int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
+                //if (dayofweek == 0)
+                //{
+                //    TEMP_FlightSunday = true;
+                //}
+                //if (dayofweek == 1)
+                //{
+                //    TEMP_FlightMonday = true;
+                //}
+                //if (dayofweek == 2)
+                //{
+                //    TEMP_FlightTuesday = true;
+                //}
+                //if (dayofweek == 3)
+                //{
+                //    TEMP_FlightWednesday = true;
+                //}
+                //if (dayofweek == 4)
+                //{
+                //    TEMP_FlightThursday = true;
+                //}
+                //if (dayofweek == 5)
+                //{
+                //    TEMP_FlightFriday = true;
+                //}
+                //if (dayofweek == 6)
+                //{
+                //    TEMP_FlightSaterday = true;
+                //}
 
 
 
@@ -675,15 +760,15 @@ namespace CI_Brasilia
                 //writerRoutes.Serialize(fileRoutes, _Routes);
                 //fileRoutes.Close();
 
-                //Console.WriteLine("Export Routes Details into XML...");
-                //// Write the list of objects to a file.
-                //System.Xml.Serialization.XmlSerializer writer =
-                //new System.Xml.Serialization.XmlSerializer(_RoutesDetails.GetType());
-                //System.IO.StreamWriter file =
-                //    new System.IO.StreamWriter("output\\routesdetails.xml");
+                Console.WriteLine("Export Routes Details into XML...");
+                // Write the list of objects to a file.
+                System.Xml.Serialization.XmlSerializer writer =
+                new System.Xml.Serialization.XmlSerializer(_RoutesDetails.GetType());
+                System.IO.StreamWriter file =
+                    new System.IO.StreamWriter("output\\routesdetails.xml");
 
-                //writer.Serialize(file, _RoutesDetails);
-                //file.Close();
+                writer.Serialize(file, _RoutesDetails);
+                file.Close();
 
             }
         }
@@ -746,16 +831,10 @@ namespace CI_Brasilia
         {
             // Auto-implemented properties. 
 
-            public string EMPRESA;
-            public string EMPRESAN;
-            public string AGENCIA;
-            public string AGENCIAN;
-            public string CIUDADN;
-            public string DEPARTAMENTON;
-            public string PAISN;
-            public string RUTA;
-            public string KILOMETROS;
-            public string MINUTOS;
+            public string RouteNr;
+            public string TripNr;
+            public DateTime Salida;
+            public DateTime Llegeda;            
         }
 
     }
