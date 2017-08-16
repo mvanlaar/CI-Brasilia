@@ -1009,7 +1009,7 @@ namespace CI_Brasilia
                         loopnumber = loopnumber + 1;
                     }
                     rdrstoptimes.Close();
-
+                    connectionstoptimes.Close();
                 }
             }
         }
