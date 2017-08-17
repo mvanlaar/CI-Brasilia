@@ -42,6 +42,8 @@ namespace CI_Brasilia
             List<CIBusTramoSteps> _TramoSteps = new List<CIBusTramoSteps> { };
             List<CIBusRoutes> _Routes = new List<CIBusRoutes> { };
             List<CIBusRoutesDetails> _RoutesDetails = new List<CIBusRoutesDetails> { };
+            List<CIBusRoutes> _RoutesError = new List<CIBusRoutes> { };
+            List<CIBusRoutes> _RoutesNon = new List<CIBusRoutes> { };
             if (fullrun)
             {
                 string CityOrigens = String.Empty;
@@ -334,29 +336,27 @@ namespace CI_Brasilia
                                 string from = (string) rdr["Origen_Ciudad_Nombre"];
                                 string to = (string) rdr["Destino_Ciudad_Nombre"];
                                 string dbroutenr = (string) rdr["ROUTENR"];
-                                
-                                if (from.Contains("-"))
+
+                                if (!from.Contains(" - "))
                                 {
-                                    // Split by - use only first part
-                                    if (!from.Contains("TULUA -") | !from.Contains("CARTAGO -"))
-                                    {
-                                        string[] temp = from.Split('-');
-                                        from = temp[0];
-                                    }
+                                    string[] temp = from.Split('-');
+                                    from = temp[0];
+
 
                                 }
-                                if (to.Contains("-"))
+                                if (!to.Contains(" - "))
                                 {
-                                // Split by - use only first part handle execption 
-                                    if (!to.Contains("TULUA -") | !to.Contains("CARTAGO -"))
-                                    {                                        
-                                        string[] temp = to.Split('-');
-                                        to = temp[0];
-                                    }
-
+                                    string[] temp = to.Split('-');
+                                    to = temp[0];
                                 }
+                                // Hotfix Lima
+                                if (to == "LIMA  (PERU) -  J. PRADO")
+                            { 
+                                    string[] temp = to.Split('-');
+                                to = temp[0];
+                            }
 
-                                Console.WriteLine("Starting request for: {0} to {1}", from, to);
+                            Console.WriteLine("Starting request for: {0} to {1}", from, to);
                                 CookieContainer cookieContainer = new CookieContainer();
 
                                 HttpWebRequest request = (HttpWebRequest) WebRequest.Create(websitemobilte);
@@ -603,7 +603,7 @@ namespace CI_Brasilia
                                             RouteNr = RouteNr.Trim();
                                             TimeofDay = TimeofDay.Trim();
                                             HtmlNode servicenode = route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
+                                                "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
                                             String service = servicenode.Attributes["src"].Value;
                                             int position = service.LastIndexOf('/');
                                             service = service.Substring(position + 1);
@@ -611,8 +611,8 @@ namespace CI_Brasilia
                                             if (fileExtPos >= 0)
                                                 service = service.Substring(0, fileExtPos);
 
-                                        // First part if departure
-                                        string daySalida = route
+                                            // First part if departure
+                                            string daySalida = route
                                                 .SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
                                                 .InnerText.Trim();
                                             string hourSalida =
@@ -642,13 +642,18 @@ namespace CI_Brasilia
                                                 Console.WriteLine("Route found...");
                                                 bool routeExists =
                                                     _Routes.Exists(x => x.RutaNr == RouteNr.Substring(0, 4)
-                                                                    && x.From == from 
-                                                                    && x.To == to);
+                                                                        && x.From == from
+                                                                        && x.To == to);
                                                 if (!routeExists)
                                                 {
 
                                                     _Routes.Add(
-                                                        new CIBusRoutes {RutaNr = RouteNr.Substring(0, 4), From = from, To = to});
+                                                        new CIBusRoutes
+                                                        {
+                                                            RutaNr = RouteNr.Substring(0, 4),
+                                                            From = from,
+                                                            To = to
+                                                        });
                                                 }
                                                 _RoutesDetails.Add(new CIBusRoutesDetails
                                                 {
@@ -665,11 +670,19 @@ namespace CI_Brasilia
                                             }
                                         }
                                     }
+                                    else
+                                    {
+                                        Console.WriteLine("No Route possible today or ever...");
+                                    _RoutesNon.Add(
+                                        new CIBusRoutes { RutaNr = dbroutenr, From = from, To = to });
+                                }
                                 }
                                 else
                                 {
                                     Console.WriteLine("Error parsing route response");
-                                }
+                                _RoutesError.Add(
+                                    new CIBusRoutes { RutaNr = dbroutenr, From = from, To = to });
+                            }
                             }
                             rdr.Close();
                     }
@@ -771,7 +784,27 @@ namespace CI_Brasilia
                 writerRoutes.Serialize(fileRoutes, _Routes);
                 fileRoutes.Close();
 
-                Console.WriteLine("Export Routes Details into XML...");
+            // Write the list of objects to a file.
+            System.Xml.Serialization.XmlSerializer writerRoutesError =
+                new System.Xml.Serialization.XmlSerializer(_RoutesError.GetType());
+
+            System.IO.StreamWriter fileRoutesError =
+                new System.IO.StreamWriter("output\\routesError.xml");
+
+            writerRoutesError.Serialize(fileRoutesError, _RoutesError);
+            fileRoutesError.Close();
+
+            // Write the list of objects to a file.
+            System.Xml.Serialization.XmlSerializer writerRoutesNon =
+                new System.Xml.Serialization.XmlSerializer(_RoutesNon.GetType());
+
+            System.IO.StreamWriter fileRoutesNon =
+                new System.IO.StreamWriter("output\\routesNon.xml");
+
+            writerRoutesError.Serialize(fileRoutesNon, _RoutesNon);
+            fileRoutesNon.Close();
+
+            Console.WriteLine("Export Routes Details into XML...");
                 // Write the list of objects to a file.
                 System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(_RoutesDetails.GetType());
