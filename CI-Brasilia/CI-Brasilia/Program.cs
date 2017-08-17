@@ -44,6 +44,8 @@ namespace CI_Brasilia
             List<CIBusRoutesDetails> _RoutesDetails = new List<CIBusRoutesDetails> { };
             List<CIBusRoutes> _RoutesError = new List<CIBusRoutes> { };
             List<CIBusRoutes> _RoutesNon = new List<CIBusRoutes> { };
+            List<CIBusRoutesCalender> _RouteCalender = new List<CIBusRoutesCalender> { };
+
             if (fullrun)
             {
                 string CityOrigens = String.Empty;
@@ -332,357 +334,481 @@ namespace CI_Brasilia
                         {
                             while (rdr.Read())
                             {
-
-                                string from = (string) rdr["Origen_Ciudad_Nombre"];
-                                string to = (string) rdr["Destino_Ciudad_Nombre"];
-                                string dbroutenr = (string) rdr["ROUTENR"];
-
-                                if (!from.Contains(" - "))
+                                for (int i = 0; i < 8; i++)
                                 {
-                                    string[] temp = from.Split('-');
-                                    from = temp[0];
 
+                                    string from = (string) rdr["Origen_Ciudad_Nombre"];
+                                    string to = (string) rdr["Destino_Ciudad_Nombre"];
+                                    string dbroutenr = (string) rdr["ROUTENR"];
 
-                                }
-                                if (!to.Contains(" - "))
-                                {
-                                    string[] temp = to.Split('-');
-                                    to = temp[0];
-                                }
-                                // Hotfix Lima
-                                if (to == "LIMA  (PERU) -  J. PRADO")
-                            { 
-                                    string[] temp = to.Split('-');
-                                to = temp[0];
-                            }
-
-                            Console.WriteLine("Starting request for: {0} to {1}", from, to);
-                                CookieContainer cookieContainer = new CookieContainer();
-
-                                HttpWebRequest request = (HttpWebRequest) WebRequest.Create(websitemobilte);
-
-                                //var GetAllFlightDatesPost = new { origin = fromiata, destination = toiata, months = 12 };
-                                //string GetAllFlightDatesPostString = JsonConvert.SerializeObject(GetAllFlightDatesPost);
-
-                                //var dataIndex = Encoding.ASCII.GetBytes(GetAllFlightDatesPostString);
-
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                //request.ContentLength = dataIndex.Length;
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Accept = HeaderAccept;
-                                //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-
-                                //using (var streamIndex = request.GetRequestStream())
-                                //{
-                                //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                //}
-                                string Stage0 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage0 = reader.ReadToEnd();
-                                }
-
-                                //Stage 1
-                                request = (HttpWebRequest) WebRequest.Create(
-                                    "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-i-0]&value=&currentField=jforms[tIQW001Controller-compra-origen-0]");
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-
-                                string Stage1 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage1 = reader.ReadToEnd();
-                                }
-
-                                // Stage 1a
-                                request = (HttpWebRequest) WebRequest.Create(
-                                    "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-origen-0]&value=%null&currentField=jforms[tIQW001Controller-compra-i-0]");
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                string Stage1a = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage1a = reader.ReadToEnd();
-                                }
-
-                                //Stage 3
-                                string s3Request =
-                                    string.Format(
-                                        "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-destino-0]&value={0}&currentField=jforms[tIQW001Controller-compra-origen-0]",
-                                        HttpUtility.UrlEncode(from));
-                                request = (HttpWebRequest) WebRequest.Create(s3Request);
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                //using (var streamIndex = request.GetRequestStream())
-                                //{
-                                //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                //}
-                                string Stage3 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage3 = reader.ReadToEnd();
-                                }
-                                // Stage 4
-                                string s4Request =
-                                    string.Format(
-                                        "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-f_ida-0]&value={0}&currentField=jforms[tIQW001Controller-compra-destino-0]",
-                                        HttpUtility.UrlEncode(to));                                
-                                request = (HttpWebRequest) WebRequest.Create(s4Request);
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                //using (var streamIndex = request.GetRequestStream())
-                                //{
-                                //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                //}
-                                string Stage4 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage4 = reader.ReadToEnd();
-                                }
-
-                                // Stage 5
-                                DateTime requestdate = DateTime.Now;
-                                requestdate = requestdate.AddDays(7);
-                                string s5Request =
-                                    string.Format(
-                                        "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-buscar-0]&value={0}&currentField=jforms[tIQW001Controller-compra-f_ida-0]",
-                                        requestdate.ToString("dd/MM/yyyy"));
-                                request = (HttpWebRequest) WebRequest.Create(s5Request);
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                //using (var streamIndex = request.GetRequestStream())
-                                //{
-                                //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                //}
-                                string Stage5 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage5 = reader.ReadToEnd();
-                                }
-
-                                //Console.WriteLine(Stage5);
-
-                                // Stage 6
-                                request = (HttpWebRequest) WebRequest.Create(
-                                    "http://186.118.168.234:7777/TiquetePW/jforms/closeForm?beanName=tIQW001Controller");
-                                request.Method = "GET";
-                                request.ContentType = "application/json; charset=utf-8";
-                                request.UserAgent = uamobile;
-                                request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                request.Accept = "application/json, text/javascript, */*; q=0.01";
-                                request.AutomaticDecompression =
-                                    DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                request.CookieContainer = cookieContainer;
-                                request.Proxy = null;
-                                request.Referer =
-                                    "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                //using (var streamIndex = request.GetRequestStream())
-                                //{
-                                //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                //}
-                                string Stage6 = String.Empty;
-                                using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
-                                {
-                                    Stage6 = reader.ReadToEnd();
-                                }
-
-                                // Get Route Listing:
-
-                                dynamic Stage5Response = JsonConvert.DeserializeObject(Stage5);
-
-                                if (Stage5Response.jforms.webShowDocument != null)
-                                {
-                                    string RedirectUrl = Stage5Response.jforms.webShowDocument[0].urlOpen.ToString();
-
-                                    if (!RedirectUrl.Contains("NOAVAILABLE.xhtml"))
+                                    if (!from.Contains(" - "))
                                     {
-                                        request = (HttpWebRequest) WebRequest.Create(RedirectUrl);
-                                        request.Method = "GET";
-                                        //request.ContentType = "application/json; charset=utf-8";
-                                        request.UserAgent = uamobile;
-                                        request.Headers.Add("Accept-Encoding", HeaderEncoding);
-                                        //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                                        request.Accept =
-                                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-                                        request.AutomaticDecompression =
-                                            DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                                        request.CookieContainer = cookieContainer;
-                                        request.Proxy = null;
-                                        request.Referer =
-                                            "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
-                                        //using (var streamIndex = request.GetRequestStream())
-                                        //{
-                                        //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
-                                        //}
-                                        string Stage7 = String.Empty;
-                                        using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                        using (StreamReader reader =
-                                            new StreamReader(responseIndex.GetResponseStream()))
+                                        string[] temp = from.Split('-');
+                                        from = temp[0];
+
+
+                                    }
+                                    if (!to.Contains(" - "))
+                                    {
+                                        string[] temp = to.Split('-');
+                                        to = temp[0];
+                                    }
+                                    // Hotfix Lima
+                                    if (to == "LIMA  (PERU) -  J. PRADO")
+                                    {
+                                        string[] temp = to.Split('-');
+                                        to = temp[0];
+                                    }
+
+                                    Console.WriteLine("Starting request for: {0} to {1}", from, to);
+                                    CookieContainer cookieContainer = new CookieContainer();
+
+                                    HttpWebRequest request = (HttpWebRequest) WebRequest.Create(websitemobilte);
+
+                                    //var GetAllFlightDatesPost = new { origin = fromiata, destination = toiata, months = 12 };
+                                    //string GetAllFlightDatesPostString = JsonConvert.SerializeObject(GetAllFlightDatesPost);
+
+                                    //var dataIndex = Encoding.ASCII.GetBytes(GetAllFlightDatesPostString);
+
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    //request.ContentLength = dataIndex.Length;
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Accept = HeaderAccept;
+                                    //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+
+                                    //using (var streamIndex = request.GetRequestStream())
+                                    //{
+                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                    //}
+                                    string Stage0 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage0 = reader.ReadToEnd();
+                                    }
+
+                                    //Stage 1
+                                    request = (HttpWebRequest) WebRequest.Create(
+                                        "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-i-0]&value=&currentField=jforms[tIQW001Controller-compra-origen-0]");
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+
+                                    string Stage1 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage1 = reader.ReadToEnd();
+                                    }
+
+                                    // Stage 1a
+                                    request = (HttpWebRequest) WebRequest.Create(
+                                        "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-origen-0]&value=%null&currentField=jforms[tIQW001Controller-compra-i-0]");
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                    string Stage1a = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage1a = reader.ReadToEnd();
+                                    }
+
+                                    //Stage 3
+                                    string s3Request =
+                                        string.Format(
+                                            "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-destino-0]&value={0}&currentField=jforms[tIQW001Controller-compra-origen-0]",
+                                            HttpUtility.UrlEncode(from));
+                                    request = (HttpWebRequest) WebRequest.Create(s3Request);
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                    //using (var streamIndex = request.GetRequestStream())
+                                    //{
+                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                    //}
+                                    string Stage3 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage3 = reader.ReadToEnd();
+                                    }
+                                    // Stage 4
+                                    string s4Request =
+                                        string.Format(
+                                            "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-f_ida-0]&value={0}&currentField=jforms[tIQW001Controller-compra-destino-0]",
+                                            HttpUtility.UrlEncode(to));
+                                    request = (HttpWebRequest) WebRequest.Create(s4Request);
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                    //using (var streamIndex = request.GetRequestStream())
+                                    //{
+                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                    //}
+                                    string Stage4 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage4 = reader.ReadToEnd();
+                                    }
+
+                                    // Stage 5
+                                    DateTime requestdate = DateTime.Now;
+                                    requestdate = requestdate.AddDays(i);
+                                    string s5Request =
+                                        string.Format(
+                                            "http://186.118.168.234:7777/TiquetePW/jforms/clickEvent?id=jforms[tIQW001Controller-compra-buscar-0]&value={0}&currentField=jforms[tIQW001Controller-compra-f_ida-0]",
+                                            requestdate.ToString("dd/MM/yyyy"));
+                                    request = (HttpWebRequest) WebRequest.Create(s5Request);
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                    //using (var streamIndex = request.GetRequestStream())
+                                    //{
+                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                    //}
+                                    string Stage5 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage5 = reader.ReadToEnd();
+                                    }
+
+                                    //Console.WriteLine(Stage5);
+
+                                    // Stage 6
+                                    request = (HttpWebRequest) WebRequest.Create(
+                                        "http://186.118.168.234:7777/TiquetePW/jforms/closeForm?beanName=tIQW001Controller");
+                                    request.Method = "GET";
+                                    request.ContentType = "application/json; charset=utf-8";
+                                    request.UserAgent = uamobile;
+                                    request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                    request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                    request.Accept = "application/json, text/javascript, */*; q=0.01";
+                                    request.AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                    request.CookieContainer = cookieContainer;
+                                    request.Proxy = null;
+                                    request.Referer =
+                                        "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                    //using (var streamIndex = request.GetRequestStream())
+                                    //{
+                                    //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                    //}
+                                    string Stage6 = String.Empty;
+                                    using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
+                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    {
+                                        Stage6 = reader.ReadToEnd();
+                                    }
+
+                                    // Get Route Listing:
+
+                                    dynamic Stage5Response = JsonConvert.DeserializeObject(Stage5);
+
+                                    if (Stage5Response.jforms.webShowDocument != null)
+                                    {
+                                        string RedirectUrl =
+                                            Stage5Response.jforms.webShowDocument[0].urlOpen.ToString();
+
+                                        if (!RedirectUrl.Contains("NOAVAILABLE.xhtml"))
                                         {
-                                            Stage7 = reader.ReadToEnd();
-                                        }
-
-                                        var doc = new HtmlDocument();
-                                        doc.LoadHtml(Stage7);
-
-                                        var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
-
-                                        foreach (var route in routes)
-                                        {
-                                            string routenrwithtime =
-                                                route.SelectSingleNode(
-                                                        "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
-                                                    .InnerText.Trim();
-                                            string[] routenrwithtimeparts = routenrwithtime.Split('-');
-                                            String RouteNr = routenrwithtimeparts[0];
-                                            string TimeofDay = routenrwithtimeparts[1];
-                                            RouteNr = RouteNr.Trim();
-                                            TimeofDay = TimeofDay.Trim();
-                                            HtmlNode servicenode = route.SelectSingleNode(
-                                                "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
-                                            String service = servicenode.Attributes["src"].Value;
-                                            int position = service.LastIndexOf('/');
-                                            service = service.Substring(position + 1);
-                                            int fileExtPos = service.LastIndexOf(".");
-                                            if (fileExtPos >= 0)
-                                                service = service.Substring(0, fileExtPos);
-
-                                            // First part if departure
-                                            string daySalida = route
-                                                .SelectSingleNode("./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                            string hourSalida =
-                                                route.SelectSingleNode(
-                                                        "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
-                                                    .InnerText.Trim();
-                                            string dayLlegada =
-                                                route.SelectSingleNode(
-                                                        "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
-                                                    .InnerText.Trim();
-                                            string hourLlegada =
-                                                route.SelectSingleNode(
-                                                        "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
-                                                    .InnerText.Trim();
-                                            DateTime datetimeSalida = DateTime.MinValue;
-                                            string datetimeSalidastring = daySalida + " " + hourSalida;
-                                            datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
-                                                "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                            DateTime datetimeLlegada = DateTime.MinValue;
-                                            string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
-                                            datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
-                                                "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                            string tripdid = RouteNr + TimeofDay + requestdate.ToString("ddMMyyyy");
-
-                                            if (dbroutenr.Substring(0, 4) == RouteNr.Substring(0, 4))
+                                            request = (HttpWebRequest) WebRequest.Create(RedirectUrl);
+                                            request.Method = "GET";
+                                            //request.ContentType = "application/json; charset=utf-8";
+                                            request.UserAgent = uamobile;
+                                            request.Headers.Add("Accept-Encoding", HeaderEncoding);
+                                            //request.Headers.Add("X-Requested-With", "XMLHttpRequest");
+                                            request.Accept =
+                                                "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+                                            request.AutomaticDecompression =
+                                                DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                                            request.CookieContainer = cookieContainer;
+                                            request.Proxy = null;
+                                            request.Referer =
+                                                "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
+                                            //using (var streamIndex = request.GetRequestStream())
+                                            //{
+                                            //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
+                                            //}
+                                            string Stage7 = String.Empty;
+                                            using (HttpWebResponse responseIndex =
+                                                (HttpWebResponse) request.GetResponse())
+                                            using (StreamReader reader =
+                                                new StreamReader(responseIndex.GetResponseStream()))
                                             {
-                                                Console.WriteLine("Route found...");
-                                                bool routeExists =
-                                                    _Routes.Exists(x => x.RutaNr == RouteNr.Substring(0, 4)
-                                                                        && x.From == from
-                                                                        && x.To == to);
-                                                if (!routeExists)
-                                                {
+                                                Stage7 = reader.ReadToEnd();
+                                            }
 
-                                                    _Routes.Add(
-                                                        new CIBusRoutes
-                                                        {
-                                                            RutaNr = RouteNr.Substring(0, 4),
-                                                            From = from,
-                                                            To = to
-                                                        });
-                                                }
-                                                _RoutesDetails.Add(new CIBusRoutesDetails
+                                            var doc = new HtmlDocument();
+                                            doc.LoadHtml(Stage7);
+
+                                            var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
+
+                                            foreach (var route in routes)
+                                            {
+                                                string routenrwithtime =
+                                                    route.SelectSingleNode(
+                                                            "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
+                                                        .InnerText.Trim();
+                                                string[] routenrwithtimeparts = routenrwithtime.Split('-');
+                                                String RouteNr = routenrwithtimeparts[0];
+                                                string TimeofDay = routenrwithtimeparts[1];
+                                                RouteNr = RouteNr.Trim();
+                                                TimeofDay = TimeofDay.Trim();
+                                                HtmlNode servicenode = route.SelectSingleNode(
+                                                    "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
+                                                String service = servicenode.Attributes["src"].Value;
+                                                int position = service.LastIndexOf('/');
+                                                service = service.Substring(position + 1);
+                                                int fileExtPos = service.LastIndexOf(".");
+                                                if (fileExtPos >= 0)
+                                                    service = service.Substring(0, fileExtPos);
+
+                                                // First part if departure
+                                                string daySalida = route
+                                                    .SelectSingleNode(
+                                                        "./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                                string hourSalida =
+                                                    route.SelectSingleNode(
+                                                            "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
+                                                        .InnerText.Trim();
+                                                string dayLlegada =
+                                                    route.SelectSingleNode(
+                                                            "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
+                                                        .InnerText.Trim();
+                                                string hourLlegada =
+                                                    route.SelectSingleNode(
+                                                            "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
+                                                        .InnerText.Trim();
+                                                DateTime datetimeSalida = DateTime.MinValue;
+                                                string datetimeSalidastring = daySalida + " " + hourSalida;
+                                                datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
+                                                    "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                                DateTime datetimeLlegada = DateTime.MinValue;
+                                                string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
+                                                datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
+                                                    "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                                string tripdid = RouteNr + TimeofDay;
+
+                                                if (dbroutenr.Substring(0, 4) == RouteNr.Substring(0, 4))
                                                 {
-                                                    RouteNr = RouteNr,
-                                                    TripNr = tripdid,
-                                                    Salida = datetimeSalida,
-                                                    Llegeda = datetimeLlegada,
-                                                    Service = service
-                                                });
+                                                    Console.WriteLine("Route found...");
+                                                    bool routeExists =
+                                                        _Routes.Exists(x => x.RutaNr == RouteNr.Substring(0, 4)
+                                                                            && x.From == from
+                                                                            && x.To == to);
+                                                    if (!routeExists)
+                                                    {
+
+                                                        _Routes.Add(
+                                                            new CIBusRoutes
+                                                            {
+                                                                RutaNr = RouteNr.Substring(0, 4),
+                                                                From = from,
+                                                                To = to
+                                                            });
+                                                    }
+
+                                                    bool routeDetailsExists =
+                                                        _RoutesDetails.Exists(x => x.RouteNr == RouteNr.Substring(0, 4)
+                                                                            && x.TripNr == tripdid
+                                                                            );
+                                                    if (!routeDetailsExists)
+                                                    {
+                                                        _RoutesDetails.Add(new CIBusRoutesDetails
+                                                        {
+                                                            RouteNr = RouteNr,
+                                                            TripNr = tripdid,
+                                                            Salida = datetimeSalida,
+                                                            Llegeda = datetimeLlegada,
+                                                            Service = service
+                                                        });
+                                                    }
+                                                    // Route Calender
+                                                    bool routeCalenderExists =
+                                                        _RouteCalender.Exists(x => x.RouteNr == RouteNr.Substring(0, 4)
+                                                                            && x.TripNr == tripdid
+                                                                            );
+
+                                                    Boolean TEMP_Monday = false;
+                                                    Boolean TEMP_Tuesday = false;
+                                                    Boolean TEMP_Wednesday = false;
+                                                    Boolean TEMP_Thursday = false;
+                                                    Boolean TEMP_Friday = false;
+                                                    Boolean TEMP_Saterday = false;
+                                                    Boolean TEMP_Sunday = false;
+
+                                                    int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
+                                                    if (dayofweek == 0)
+                                                    {
+                                                        TEMP_Sunday = true;
+                                                    }
+                                                    if (dayofweek == 1)
+                                                    {
+                                                        TEMP_Monday = true;
+                                                    }
+                                                    if (dayofweek == 2)
+                                                    {
+                                                        TEMP_Tuesday = true;
+                                                    }
+                                                    if (dayofweek == 3)
+                                                    {
+                                                        TEMP_Wednesday = true;
+                                                    }
+                                                    if (dayofweek == 4)
+                                                    {
+                                                        TEMP_Thursday = true;
+                                                    }
+                                                    if (dayofweek == 5)
+                                                    {
+                                                        TEMP_Friday = true;
+                                                    }
+                                                    if (dayofweek == 6)
+                                                    {
+                                                        TEMP_Saterday = true;
+                                                    }
+
+
+                                                    if (routeCalenderExists)
+                                                    {
+                                                        if (dayofweek == 0)
+                                                        {
+                                                            _RouteCalender
+                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                           && p.TripNr == tripdid).Sunday = TEMP_Sunday;
+                                                        }
+                                                        if (dayofweek == 1)
+                                                        {
+                                                            _RouteCalender
+                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                           && p.TripNr == tripdid).Monday = TEMP_Monday;
+                                                        }
+                                                        if (dayofweek == 2)
+                                                        {
+                                                            _RouteCalender
+                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                               && p.TripNr == tripdid).Tuesday =
+                                                                TEMP_Tuesday;
+                                                        }
+                                                        if (dayofweek == 3)
+                                                        {
+                                                            _RouteCalender
+                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                               && p.TripNr == tripdid).Wednesday =
+                                                                TEMP_Wednesday;
+                                                        }
+                                                        if (dayofweek == 4)
+                                                        {
+                                                            _RouteCalender
+                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                               && p.TripNr == tripdid).Thursday =
+                                                                TEMP_Thursday;
+                                                        }
+                                                        if (dayofweek == 5)
+                                                        {
+                                                            _RouteCalender
+                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                           && p.TripNr == tripdid).Friday = TEMP_Friday;
+                                                        }
+                                                        if (dayofweek == 6)
+                                                        {
+                                                            _RouteCalender
+                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
+                                                                               && p.TripNr == tripdid).Saterday =
+                                                                TEMP_Saterday;
+                                                        }
+                                                    }
+                                                else
+                                                    {
+                                                        _RouteCalender.Add(new CIBusRoutesCalender
+                                                        {
+                                                            RouteNr = RouteNr,
+                                                            TripNr = tripdid,
+                                                            Monday = TEMP_Monday,
+                                                            Tuesday = TEMP_Tuesday,
+                                                            Wednesday = TEMP_Wednesday,
+                                                            Thursday = TEMP_Thursday,
+                                                            Friday = TEMP_Friday,
+                                                            Saterday = TEMP_Saterday,
+                                                            Sunday = TEMP_Sunday
+                                                        });
+                                                    }
                                             }
                                             else
-                                            {
-                                                Console.WriteLine("Route Passing by...");
+                                                {
+                                                    Console.WriteLine("Route Passing by...");
+                                                }
                                             }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("No Route possible today or ever...");
+                                            _RoutesNon.Add(
+                                                new CIBusRoutes {RutaNr = dbroutenr, From = from, To = to});
                                         }
                                     }
                                     else
                                     {
-                                        Console.WriteLine("No Route possible today or ever...");
-                                    _RoutesNon.Add(
-                                        new CIBusRoutes { RutaNr = dbroutenr, From = from, To = to });
+                                        Console.WriteLine("Error parsing route response");
+                                        _RoutesError.Add(
+                                            new CIBusRoutes {RutaNr = dbroutenr, From = from, To = to});
+                                    }
                                 }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error parsing route response");
-                                _RoutesError.Add(
-                                    new CIBusRoutes { RutaNr = dbroutenr, From = from, To = to });
-                            }
+                                
                             }
                             rdr.Close();
                     }
@@ -929,6 +1055,41 @@ namespace CI_Brasilia
                     }
 
                 }
+            using (var gtfscalendar = new StreamWriter(@"gtfs\\calendar.txt"))
+            {
+
+                var csvcalendar = new CsvWriter(gtfscalendar);
+                csvcalendar.Configuration.Delimiter = ",";
+                csvcalendar.Configuration.Encoding = Encoding.UTF8;
+                csvcalendar.Configuration.TrimFields = true;
+                // header 
+                csvcalendar.WriteField("service_id");
+                csvcalendar.WriteField("monday");
+                csvcalendar.WriteField("tuesday");
+                csvcalendar.WriteField("wednesday");
+                csvcalendar.WriteField("thursday");
+                csvcalendar.WriteField("friday");
+                csvcalendar.WriteField("saturday");
+                csvcalendar.WriteField("sunday");
+                csvcalendar.WriteField("start_date");
+                csvcalendar.WriteField("end_date");
+                csvcalendar.NextRecord();
+                foreach (var calender in _RouteCalender)
+                {
+                    csvcalendar.WriteField(calender.RouteNr + calender.TripNr);
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Monday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Tuesday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Wednesday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Thursday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Friday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Saterday));
+                    csvcalendar.WriteField(Convert.ToInt32(calender.Sunday));
+                    csvcalendar.WriteField("20170801");
+                    csvcalendar.WriteField("20180801");
+                    csvcalendar.NextRecord();
+                }
+            }
+
             using (var gtfsstoptimes = new StreamWriter(@"gtfs\\stop_times.txt"))
             {
                 // Headers 
@@ -1111,6 +1272,23 @@ namespace CI_Brasilia
             public DateTime Salida;
             public DateTime Llegeda;
             public string Service;
+        }
+
+        [Serializable]
+        public class CIBusRoutesCalender
+        {
+            // Auto-implemented properties. 
+
+            public string RouteNr;
+            public string TripNr;
+            public Boolean Monday; 
+            public Boolean Tuesday; 
+            public Boolean Wednesday; 
+            public Boolean Thursday; 
+            public Boolean Friday; 
+            public Boolean Saterday; 
+            public Boolean Sunday;
+
         }
 
     }
