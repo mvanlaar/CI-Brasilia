@@ -334,7 +334,7 @@ namespace CI_Brasilia
                         {
                             while (rdr.Read())
                             {
-                                for (int i = 0; i < 8; i++)
+                                for (int i = 0; i < 7; i++)
                                 {
 
                                     string from = (string) rdr["Origen_Ciudad_Nombre"];
@@ -680,8 +680,7 @@ namespace CI_Brasilia
                                                     }
                                                     // Route Calender
                                                     bool routeCalenderExists =
-                                                        _RouteCalender.Exists(x => x.RouteNr == RouteNr.Substring(0, 4)
-                                                                            && x.TripNr == tripdid
+                                                        _RouteCalender.Exists(x => x.TripNr == tripdid
                                                                             );
 
                                                     Boolean TEMP_Monday = false;
@@ -728,47 +727,40 @@ namespace CI_Brasilia
                                                         if (dayofweek == 0)
                                                         {
                                                             _RouteCalender
-                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                           && p.TripNr == tripdid).Sunday = TEMP_Sunday;
+                                                                .Find(p => p.TripNr == tripdid).Sunday = TEMP_Sunday;
                                                         }
                                                         if (dayofweek == 1)
                                                         {
                                                             _RouteCalender
-                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                           && p.TripNr == tripdid).Monday = TEMP_Monday;
+                                                                .Find(p => p.TripNr == tripdid).Monday = TEMP_Monday;
                                                         }
                                                         if (dayofweek == 2)
                                                         {
                                                             _RouteCalender
-                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                               && p.TripNr == tripdid).Tuesday =
+                                                                    .Find(p =>p.TripNr == tripdid).Tuesday =
                                                                 TEMP_Tuesday;
                                                         }
                                                         if (dayofweek == 3)
                                                         {
                                                             _RouteCalender
-                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                               && p.TripNr == tripdid).Wednesday =
+                                                                    .Find(p => p.TripNr == tripdid).Wednesday =
                                                                 TEMP_Wednesday;
                                                         }
                                                         if (dayofweek == 4)
                                                         {
                                                             _RouteCalender
-                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                               && p.TripNr == tripdid).Thursday =
+                                                                    .Find(p => p.TripNr == tripdid).Thursday =
                                                                 TEMP_Thursday;
                                                         }
                                                         if (dayofweek == 5)
                                                         {
                                                             _RouteCalender
-                                                                .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                           && p.TripNr == tripdid).Friday = TEMP_Friday;
+                                                                .Find(p => p.TripNr == tripdid).Friday = TEMP_Friday;
                                                         }
                                                         if (dayofweek == 6)
                                                         {
                                                             _RouteCalender
-                                                                    .Find(p => p.RouteNr == RouteNr.Substring(0, 4)
-                                                                               && p.TripNr == tripdid).Saterday =
+                                                                    .Find(p => p.TripNr == tripdid).Saterday =
                                                                 TEMP_Saterday;
                                                         }
                                                     }
@@ -776,7 +768,6 @@ namespace CI_Brasilia
                                                     {
                                                         _RouteCalender.Add(new CIBusRoutesCalender
                                                         {
-                                                            RouteNr = RouteNr,
                                                             TripNr = tripdid,
                                                             Monday = TEMP_Monday,
                                                             Tuesday = TEMP_Tuesday,
@@ -1042,7 +1033,7 @@ namespace CI_Brasilia
                     foreach (var trip in _RoutesDetails)
                     {
                         csvtrips.WriteField(trip.RouteNr.Substring(0,4));
-                        csvtrips.WriteField("FULLWEEK");
+                        csvtrips.WriteField(trip.TripNr);
                         csvtrips.WriteField(trip.TripNr);
                         csvtrips.WriteField("");
                         csvtrips.WriteField("");
@@ -1076,7 +1067,7 @@ namespace CI_Brasilia
                 csvcalendar.NextRecord();
                 foreach (var calender in _RouteCalender)
                 {
-                    csvcalendar.WriteField(calender.RouteNr + calender.TripNr);
+                    csvcalendar.WriteField(calender.TripNr);
                     csvcalendar.WriteField(Convert.ToInt32(calender.Monday));
                     csvcalendar.WriteField(Convert.ToInt32(calender.Tuesday));
                     csvcalendar.WriteField(Convert.ToInt32(calender.Wednesday));
@@ -1278,8 +1269,6 @@ namespace CI_Brasilia
         public class CIBusRoutesCalender
         {
             // Auto-implemented properties. 
-
-            public string RouteNr;
             public string TripNr;
             public Boolean Monday; 
             public Boolean Tuesday; 
