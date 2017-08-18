@@ -15,6 +15,7 @@ using System.Threading;
 using CsvHelper;
 using System.Text;
 using System.Web;
+using System.Configuration;
 
 namespace CI_Brasilia
 {
@@ -28,6 +29,7 @@ namespace CI_Brasilia
             const string websitemobilte = "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
             const string HeaderAccept = "text/html,application/xhtml+xml,application/xml;q=0.9,*;q=0.8";
             const string HeaderEncoding = "gzip,deflate";
+            string APIPathBus = "bus/agencystop/";
 
             bool fullrun = false;
 
@@ -45,6 +47,7 @@ namespace CI_Brasilia
             List<CIBusRoutes> _RoutesError = new List<CIBusRoutes> { };
             List<CIBusRoutes> _RoutesNon = new List<CIBusRoutes> { };
             List<CIBusRoutesCalender> _RouteCalender = new List<CIBusRoutesCalender> { };
+            List<GTFSStops> _GTFSStops = new List<GTFSStops> { };
 
             if (fullrun)
             {
@@ -815,65 +818,9 @@ namespace CI_Brasilia
                     //}
                 }
             }
-
-
-            //bool NextdayArrival = datetimeSalida.Date != datetimeLlegada.Date;
-            //Boolean TEMP_FlightMonday = false;
-            //Boolean TEMP_FlightTuesday = false;
-            //Boolean TEMP_FlightWednesday = false;
-            //Boolean TEMP_FlightThursday = false;
-            //Boolean TEMP_FlightFriday = false;
-            //Boolean TEMP_FlightSaterday = false;
-            //Boolean TEMP_FlightSunday = false;
-
-            //int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
-            //if (dayofweek == 0)
-            //{
-            //    TEMP_FlightSunday = true;
-            //}
-            //if (dayofweek == 1)
-            //{
-            //    TEMP_FlightMonday = true;
-            //}
-            //if (dayofweek == 2)
-            //{
-            //    TEMP_FlightTuesday = true;
-            //}
-            //if (dayofweek == 3)
-            //{
-            //    TEMP_FlightWednesday = true;
-            //}
-            //if (dayofweek == 4)
-            //{
-            //    TEMP_FlightThursday = true;
-            //}
-            //if (dayofweek == 5)
-            //{
-            //    TEMP_FlightFriday = true;
-            //}
-            //if (dayofweek == 6)
-            //{
-            //    TEMP_FlightSaterday = true;
-            //}
-
-
-
-
-
-            // Parse Response Stage 7
-
-            // Select all divs with the class route-widget
-
-            // Parse route number
-
-            // Is this the route number that we know? 
-            // No? Hmm
-            // Yes Ok parse the begin and end time. Parse the day of arrival
-            // use the stops we kno to create the route.
-            // Save the files.
-
+            
             //// Export Stops
-            //var Cities = _RoutesDetails.Select(m => new { m.CIUDADN }).Distinct().ToList();
+            //var Cities = _RoutesDetails.Select(m => new { m. }).Distinct().ToList();
 
             //// You'll do something else with it, here I write it to a console window
             //// Console.WriteLine(text.ToString());
@@ -1149,6 +1096,36 @@ namespace CI_Brasilia
                     }
                     while (rdrstoptimes.Read())
                     {
+                        // Get the agency and the stop details. Add them to a list.
+                        string stop_id;
+                        using (var clientFrom = new WebClient())
+                        {
+                            clientFrom.Encoding = Encoding.UTF8;
+                            clientFrom.Headers.Add("user-agent", ua);
+                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + rdrstoptimes["CIUDADN"].ToString();
+                            var jsonapiFrom = clientFrom.DownloadString(urlapiFrom);
+                            dynamic AirportResponseJsonFrom = JsonConvert.DeserializeObject(jsonapiFrom);
+                            _GTFSStops.Add(new GTFSStops
+                            {
+                                stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id),
+                                stop_code = Convert.ToString(AirportResponseJsonFrom[0].stop_code),
+                                stop_name = Convert.ToString(AirportResponseJsonFrom[0].stop_name),
+                                stop_desc = Convert.ToString(AirportResponseJsonFrom[0].stop_desc),
+                                stop_lat = Convert.ToString(AirportResponseJsonFrom[0].stop_lat),
+                                stop_lon = Convert.ToString(AirportResponseJsonFrom[0].stop_lon),
+                                stop_timezone = Convert.ToString(AirportResponseJsonFrom[0].stop_timezone),
+                                stop_url = Convert.ToString(AirportResponseJsonFrom[0].stop_url),
+                                wheelchair_boarding = Convert.ToString(AirportResponseJsonFrom[0].wheelchair_boarding),
+                                zone_id = Convert.ToString(AirportResponseJsonFrom[0].zone_id),
+                                location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
+                                parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type)
+                            });
+                            stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id;
+                        }
+
+
+
+
                         int addminutes = (int) rdrstoptimes["MINUTOS"];
 
                         DateTime stoptime = trip.Salida.AddMinutes(addminutes);
@@ -1160,7 +1137,7 @@ namespace CI_Brasilia
                             csvstoptimes.WriteField(trip.TripNr);
                             csvstoptimes.WriteField(String.Format("{0:HH:mm:ss}", stoptime));
                             csvstoptimes.WriteField(String.Format("{0:HH:mm:ss}", stoptime));
-                            csvstoptimes.WriteField(rdrstoptimes["CIUDADN"].ToString());
+                            csvstoptimes.WriteField(stop_id);
                             csvstoptimes.WriteField(loopnumber.ToString());
                             csvstoptimes.WriteField("");
                             csvstoptimes.WriteField("0");
@@ -1197,8 +1174,63 @@ namespace CI_Brasilia
                     connectionstoptimes.Close();
                 }
             }
+
+            // stops
+            using (var gtfsstops = new StreamWriter(@"gtfs\\stops.txt"))
+            {
+                // Route record
+                var csvstops = new CsvWriter(gtfsstops);
+                csvstops.Configuration.Delimiter = ",";
+                csvstops.Configuration.Encoding = Encoding.UTF8;
+                csvstops.Configuration.TrimFields = true;
+                // header                                 
+                csvstops.WriteField("stop_id");
+                csvstops.WriteField("stop_code");
+                csvstops.WriteField("stop_name");
+                csvstops.WriteField("stop_desc");
+                csvstops.WriteField("stop_lat");
+                csvstops.WriteField("stop_lon");
+                csvstops.WriteField("zone_id");
+                csvstops.WriteField("stop_url");
+                csvstops.WriteField("stop_timezone");
+                csvstops.NextRecord();
+
+                foreach (var GTFSStops in _GTFSStops.Distinct().ToList())
+                {
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_id));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_code));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_name));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_desc));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_lat));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_lon));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.zone_id));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_url));
+                    csvstops.WriteField(Convert.ToString(GTFSStops.stop_timezone));
+                    csvstops.NextRecord();
+                    
+                }
+            }
+
+
         }
-        
+
+        [Serializable]
+        public class GTFSStops
+        {
+            public string stop_id { get; set; }
+            public string stop_code { get; set; }
+            public string stop_name { get; set; }
+            public string stop_desc { get; set; }
+            public string stop_lat { get; set; }
+            public string stop_lon { get; set; }
+            public string zone_id { get; set; }
+            public string stop_url { get; set; }
+            public string location_type { get; set; }
+            public string parent_station { get; set; }
+            public string stop_timezone { get; set; }
+            public string wheelchair_boarding { get; set; }
+
+        }
 
 
         [Serializable]
