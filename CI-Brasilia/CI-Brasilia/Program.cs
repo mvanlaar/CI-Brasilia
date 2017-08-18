@@ -1102,7 +1102,7 @@ namespace CI_Brasilia
                         {
                             clientFrom.Encoding = Encoding.UTF8;
                             clientFrom.Headers.Add("user-agent", ua);
-                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + rdrstoptimes["CIUDADN"].ToString();
+                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString());
                             var jsonapiFrom = clientFrom.DownloadString(urlapiFrom);
                             dynamic AirportResponseJsonFrom = JsonConvert.DeserializeObject(jsonapiFrom);
                             _GTFSStops.Add(new GTFSStops
@@ -1120,7 +1120,7 @@ namespace CI_Brasilia
                                 location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
                                 parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type)
                             });
-                            stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id;
+                            stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id);
                         }
 
 
