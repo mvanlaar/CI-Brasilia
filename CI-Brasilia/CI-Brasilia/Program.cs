@@ -1102,8 +1102,8 @@ namespace CI_Brasilia
                         {
                             clientFrom.Encoding = Encoding.UTF8;
                             clientFrom.Headers.Add("user-agent", ua);
-                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString());
-                            var jsonapiFrom = clientFrom.DownloadString(urlapiFrom);
+                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString().Trim());
+                            var jsonapiFrom = clientFrom.DownloadString(urlapiFrom.Replace("+", "%20")); 
                             dynamic AirportResponseJsonFrom = JsonConvert.DeserializeObject(jsonapiFrom);
                             _GTFSStops.Add(new GTFSStops
                             {
