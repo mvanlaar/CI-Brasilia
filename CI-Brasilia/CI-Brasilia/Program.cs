@@ -38,7 +38,6 @@ namespace CI_Brasilia
             Thread.CurrentThread.CurrentUICulture = export;
 
 
-
             List<CIBusOrigens> _Origens = new List<CIBusOrigens> { };
             List<CIBusOrigensDestino> _OrigensDestino = new List<CIBusOrigensDestino> { };
             List<CIBusTramoSteps> _TramoSteps = new List<CIBusTramoSteps> { };
@@ -282,18 +281,13 @@ namespace CI_Brasilia
                     }
                     catch
                     {
-
                         Console.WriteLine("Timeout, skip or error");
-
                     }
 
                     GC.Collect();
-
                 });
             }
             // Get the route information:
-
-            
 
 
             using (SqlConnection connection =
@@ -332,37 +326,38 @@ namespace CI_Brasilia
 
                     //try
                     //{
-                        connection.Open();
-                        using (SqlDataReader rdr = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlDataReader rdr = command.ExecuteReader())
+                    {
+                        while (rdr.Read())
                         {
-                            while (rdr.Read())
+                            for (int i = 0; i < 7; i++)
                             {
-                                for (int i = 0; i < 7; i++)
+                                Boolean error = false;
+                                string Stage7 = String.Empty;
+
+                                string from = (string) rdr["Origen_Ciudad_Nombre"];
+                                string to = (string) rdr["Destino_Ciudad_Nombre"];
+                                string dbroutenr = (string) rdr["ROUTENR"];
+
+                                if (!from.Contains(" - "))
                                 {
-
-                                    string from = (string) rdr["Origen_Ciudad_Nombre"];
-                                    string to = (string) rdr["Destino_Ciudad_Nombre"];
-                                    string dbroutenr = (string) rdr["ROUTENR"];
-
-                                    if (!from.Contains(" - "))
-                                    {
-                                        string[] temp = from.Split('-');
-                                        from = temp[0];
-
-
-                                    }
-                                    if (!to.Contains(" - "))
-                                    {
-                                        string[] temp = to.Split('-');
-                                        to = temp[0];
-                                    }
-                                    // Hotfix Lima
-                                    if (to == "LIMA  (PERU) -  J. PRADO")
-                                    {
-                                        string[] temp = to.Split('-');
-                                        to = temp[0];
-                                    }
-
+                                    string[] temp = from.Split('-');
+                                    from = temp[0];
+                                }
+                                if (!to.Contains(" - "))
+                                {
+                                    string[] temp = to.Split('-');
+                                    to = temp[0];
+                                }
+                                // Hotfix Lima
+                                if (to == "LIMA  (PERU) -  J. PRADO")
+                                {
+                                    string[] temp = to.Split('-');
+                                    to = temp[0];
+                                }
+                                try
+                                {
                                     Console.WriteLine("Starting request for: {0} to {1}", from, to);
                                     CookieContainer cookieContainer = new CookieContainer();
 
@@ -391,7 +386,8 @@ namespace CI_Brasilia
                                     //}
                                     string Stage0 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage0 = reader.ReadToEnd();
                                     }
@@ -414,7 +410,8 @@ namespace CI_Brasilia
 
                                     string Stage1 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage1 = reader.ReadToEnd();
                                     }
@@ -436,7 +433,8 @@ namespace CI_Brasilia
                                         "http://186.118.168.234:7777/TiquetePW/faces/TIQW001MOBILE.xhtml?App=S";
                                     string Stage1a = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage1a = reader.ReadToEnd();
                                     }
@@ -465,7 +463,8 @@ namespace CI_Brasilia
                                     //}
                                     string Stage3 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage3 = reader.ReadToEnd();
                                     }
@@ -493,7 +492,8 @@ namespace CI_Brasilia
                                     //}
                                     string Stage4 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage4 = reader.ReadToEnd();
                                     }
@@ -524,7 +524,8 @@ namespace CI_Brasilia
                                     //}
                                     string Stage5 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage5 = reader.ReadToEnd();
                                     }
@@ -552,12 +553,11 @@ namespace CI_Brasilia
                                     //}
                                     string Stage6 = String.Empty;
                                     using (HttpWebResponse responseIndex = (HttpWebResponse) request.GetResponse())
-                                    using (StreamReader reader = new StreamReader(responseIndex.GetResponseStream()))
+                                    using (StreamReader reader =
+                                        new StreamReader(responseIndex.GetResponseStream()))
                                     {
                                         Stage6 = reader.ReadToEnd();
                                     }
-
-                                    // Get Route Listing:
 
                                     dynamic Stage5Response = JsonConvert.DeserializeObject(Stage5);
 
@@ -586,7 +586,7 @@ namespace CI_Brasilia
                                             //{
                                             //    streamIndex.Write(dataIndex, 0, dataIndex.Length);
                                             //}
-                                            string Stage7 = String.Empty;
+
                                             using (HttpWebResponse responseIndex =
                                                 (HttpWebResponse) request.GetResponse())
                                             using (StreamReader reader =
@@ -594,205 +594,13 @@ namespace CI_Brasilia
                                             {
                                                 Stage7 = reader.ReadToEnd();
                                             }
-
-                                            var doc = new HtmlDocument();
-                                            doc.LoadHtml(Stage7);
-
-                                            var routes = doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
-
-                                            foreach (var route in routes)
-                                            {
-                                                string routenrwithtime =
-                                                    route.SelectSingleNode(
-                                                            "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
-                                                        .InnerText.Trim();
-                                                string[] routenrwithtimeparts = routenrwithtime.Split('-');
-                                                String RouteNr = routenrwithtimeparts[0];
-                                                string TimeofDay = routenrwithtimeparts[1];
-                                                RouteNr = RouteNr.Trim();
-                                                TimeofDay = TimeofDay.Trim();
-                                                HtmlNode servicenode = route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
-                                                String service = servicenode.Attributes["src"].Value;
-                                                int position = service.LastIndexOf('/');
-                                                service = service.Substring(position + 1);
-                                                int fileExtPos = service.LastIndexOf(".");
-                                                if (fileExtPos >= 0)
-                                                    service = service.Substring(0, fileExtPos);
-
-                                                // First part if departure
-                                                string daySalida = route
-                                                    .SelectSingleNode(
-                                                        "./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
-                                                    .InnerText.Trim();
-                                                string hourSalida =
-                                                    route.SelectSingleNode(
-                                                            "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
-                                                        .InnerText.Trim();
-                                                string dayLlegada =
-                                                    route.SelectSingleNode(
-                                                            "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
-                                                        .InnerText.Trim();
-                                                string hourLlegada =
-                                                    route.SelectSingleNode(
-                                                            "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
-                                                        .InnerText.Trim();
-                                                DateTime datetimeSalida = DateTime.MinValue;
-                                                string datetimeSalidastring = daySalida + " " + hourSalida;
-                                                datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
-                                                    "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                                DateTime datetimeLlegada = DateTime.MinValue;
-                                                string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
-                                                datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
-                                                    "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                                string tripdid = RouteNr + TimeofDay;
-
-                                                if (dbroutenr.Substring(0, 4) == RouteNr.Substring(0, 4))
-                                                {
-                                                    Console.WriteLine("Route found...");
-                                                    bool routeExists =
-                                                        _Routes.Exists(x => x.RutaNr == RouteNr.Substring(0, 4)
-                                                                            && x.From == from
-                                                                            && x.To == to);
-                                                    if (!routeExists)
-                                                    {
-
-                                                        _Routes.Add(
-                                                            new CIBusRoutes
-                                                            {
-                                                                RutaNr = RouteNr.Substring(0, 4),
-                                                                From = from,
-                                                                To = to
-                                                            });
-                                                    }
-
-                                                    bool routeDetailsExists =
-                                                        _RoutesDetails.Exists(x => x.RouteNr == RouteNr.Substring(0, 4)
-                                                                            && x.TripNr == tripdid
-                                                                            );
-                                                    if (!routeDetailsExists)
-                                                    {
-                                                        _RoutesDetails.Add(new CIBusRoutesDetails
-                                                        {
-                                                            RouteNr = RouteNr,
-                                                            TripNr = tripdid,
-                                                            Salida = datetimeSalida,
-                                                            Llegeda = datetimeLlegada,
-                                                            Service = service
-                                                        });
-                                                    }
-                                                    // Route Calender
-                                                    bool routeCalenderExists =
-                                                        _RouteCalender.Exists(x => x.TripNr == tripdid
-                                                                            );
-
-                                                    Boolean TEMP_Monday = false;
-                                                    Boolean TEMP_Tuesday = false;
-                                                    Boolean TEMP_Wednesday = false;
-                                                    Boolean TEMP_Thursday = false;
-                                                    Boolean TEMP_Friday = false;
-                                                    Boolean TEMP_Saterday = false;
-                                                    Boolean TEMP_Sunday = false;
-
-                                                    int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
-                                                    if (dayofweek == 0)
-                                                    {
-                                                        TEMP_Sunday = true;
-                                                    }
-                                                    if (dayofweek == 1)
-                                                    {
-                                                        TEMP_Monday = true;
-                                                    }
-                                                    if (dayofweek == 2)
-                                                    {
-                                                        TEMP_Tuesday = true;
-                                                    }
-                                                    if (dayofweek == 3)
-                                                    {
-                                                        TEMP_Wednesday = true;
-                                                    }
-                                                    if (dayofweek == 4)
-                                                    {
-                                                        TEMP_Thursday = true;
-                                                    }
-                                                    if (dayofweek == 5)
-                                                    {
-                                                        TEMP_Friday = true;
-                                                    }
-                                                    if (dayofweek == 6)
-                                                    {
-                                                        TEMP_Saterday = true;
-                                                    }
-
-
-                                                    if (routeCalenderExists)
-                                                    {
-                                                        if (dayofweek == 0)
-                                                        {
-                                                            _RouteCalender
-                                                                .Find(p => p.TripNr == tripdid).Sunday = TEMP_Sunday;
-                                                        }
-                                                        if (dayofweek == 1)
-                                                        {
-                                                            _RouteCalender
-                                                                .Find(p => p.TripNr == tripdid).Monday = TEMP_Monday;
-                                                        }
-                                                        if (dayofweek == 2)
-                                                        {
-                                                            _RouteCalender
-                                                                    .Find(p =>p.TripNr == tripdid).Tuesday =
-                                                                TEMP_Tuesday;
-                                                        }
-                                                        if (dayofweek == 3)
-                                                        {
-                                                            _RouteCalender
-                                                                    .Find(p => p.TripNr == tripdid).Wednesday =
-                                                                TEMP_Wednesday;
-                                                        }
-                                                        if (dayofweek == 4)
-                                                        {
-                                                            _RouteCalender
-                                                                    .Find(p => p.TripNr == tripdid).Thursday =
-                                                                TEMP_Thursday;
-                                                        }
-                                                        if (dayofweek == 5)
-                                                        {
-                                                            _RouteCalender
-                                                                .Find(p => p.TripNr == tripdid).Friday = TEMP_Friday;
-                                                        }
-                                                        if (dayofweek == 6)
-                                                        {
-                                                            _RouteCalender
-                                                                    .Find(p => p.TripNr == tripdid).Saterday =
-                                                                TEMP_Saterday;
-                                                        }
-                                                    }
-                                                else
-                                                    {
-                                                        _RouteCalender.Add(new CIBusRoutesCalender
-                                                        {
-                                                            TripNr = tripdid,
-                                                            Monday = TEMP_Monday,
-                                                            Tuesday = TEMP_Tuesday,
-                                                            Wednesday = TEMP_Wednesday,
-                                                            Thursday = TEMP_Thursday,
-                                                            Friday = TEMP_Friday,
-                                                            Saterday = TEMP_Saterday,
-                                                            Sunday = TEMP_Sunday
-                                                        });
-                                                    }
-                                            }
-                                            else
-                                                {
-                                                    Console.WriteLine("Route Passing by...");
-                                                }
-                                            }
                                         }
                                         else
                                         {
                                             Console.WriteLine("No Route possible today or ever...");
                                             _RoutesNon.Add(
                                                 new CIBusRoutes {RutaNr = dbroutenr, From = from, To = to});
+                                            error = true;
                                         }
                                     }
                                     else
@@ -800,25 +608,230 @@ namespace CI_Brasilia
                                         Console.WriteLine("Error parsing route response");
                                         _RoutesError.Add(
                                             new CIBusRoutes {RutaNr = dbroutenr, From = from, To = to});
+                                        error = true;
                                     }
                                 }
-                                
+                                catch
+                                {
+                                    error = true;
+                                }
+                                // Get Route Listing:
+                                if (!error)
+                                {
+                                    var doc = new HtmlDocument();
+                                    doc.LoadHtml(Stage7);
+
+                                    var routes =
+                                        doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
+
+                                    foreach (var route in routes)
+                                    {
+                                        string routenrwithtime =
+                                            route.SelectSingleNode(
+                                                    "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
+                                                .InnerText.Trim();
+                                        string[] routenrwithtimeparts = routenrwithtime.Split('-');
+                                        String RouteNr = routenrwithtimeparts[0];
+                                        string TimeofDay = routenrwithtimeparts[1];
+                                        RouteNr = RouteNr.Trim();
+                                        TimeofDay = TimeofDay.Trim();
+                                        HtmlNode servicenode = route.SelectSingleNode(
+                                            "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
+                                        String service = servicenode.Attributes["src"].Value;
+                                        int position = service.LastIndexOf('/');
+                                        service = service.Substring(position + 1);
+                                        int fileExtPos = service.LastIndexOf(".");
+                                        if (fileExtPos >= 0)
+                                            service = service.Substring(0, fileExtPos);
+
+                                        // First part if departure
+                                        string daySalida = route
+                                            .SelectSingleNode(
+                                                "./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
+                                            .InnerText.Trim();
+                                        string hourSalida =
+                                            route.SelectSingleNode(
+                                                    "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
+                                                .InnerText.Trim();
+                                        string dayLlegada =
+                                            route.SelectSingleNode(
+                                                    "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
+                                                .InnerText.Trim();
+                                        string hourLlegada =
+                                            route.SelectSingleNode(
+                                                    "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
+                                                .InnerText.Trim();
+                                        DateTime datetimeSalida = DateTime.MinValue;
+                                        string datetimeSalidastring = daySalida + " " + hourSalida;
+                                        datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
+                                            "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                        DateTime datetimeLlegada = DateTime.MinValue;
+                                        string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
+                                        datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
+                                            "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                        string tripdid = RouteNr + TimeofDay;
+
+                                        if (dbroutenr.Substring(0, 4) == RouteNr)
+                                        {
+                                            Console.WriteLine("Route found...");
+                                            bool routeExists =
+                                                _Routes.Exists(x => x.RutaNr == RouteNr
+                                                                    && x.From == from
+                                                                    && x.To == to);
+                                            if (!routeExists)
+                                            {
+                                                _Routes.Add(
+                                                    new CIBusRoutes
+                                                    {
+                                                        RutaNr = RouteNr,
+                                                        From = from,
+                                                        To = to
+                                                    });
+                                            }
+
+                                            bool routeDetailsExists =
+                                                _RoutesDetails.Exists(x => x.RouteNr == RouteNr
+                                                                           && x.TripNr == tripdid
+                                                );
+                                            if (!routeDetailsExists)
+                                            {
+                                                _RoutesDetails.Add(new CIBusRoutesDetails
+                                                {
+                                                    RouteNr = RouteNr,
+                                                    TripNr = tripdid,
+                                                    Salida = datetimeSalida,
+                                                    Llegeda = datetimeLlegada,
+                                                    Service = service
+                                                });
+                                            }
+                                            // Route Calender
+                                            bool routeCalenderExists =
+                                                _RouteCalender.Exists(x => x.TripNr == tripdid
+                                                );
+
+                                            Boolean TEMP_Monday = false;
+                                            Boolean TEMP_Tuesday = false;
+                                            Boolean TEMP_Wednesday = false;
+                                            Boolean TEMP_Thursday = false;
+                                            Boolean TEMP_Friday = false;
+                                            Boolean TEMP_Saterday = false;
+                                            Boolean TEMP_Sunday = false;
+
+                                            int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
+                                            if (dayofweek == 0)
+                                            {
+                                                TEMP_Sunday = true;
+                                            }
+                                            if (dayofweek == 1)
+                                            {
+                                                TEMP_Monday = true;
+                                            }
+                                            if (dayofweek == 2)
+                                            {
+                                                TEMP_Tuesday = true;
+                                            }
+                                            if (dayofweek == 3)
+                                            {
+                                                TEMP_Wednesday = true;
+                                            }
+                                            if (dayofweek == 4)
+                                            {
+                                                TEMP_Thursday = true;
+                                            }
+                                            if (dayofweek == 5)
+                                            {
+                                                TEMP_Friday = true;
+                                            }
+                                            if (dayofweek == 6)
+                                            {
+                                                TEMP_Saterday = true;
+                                            }
+
+
+                                            if (routeCalenderExists)
+                                            {
+                                                if (dayofweek == 0)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Sunday =
+                                                        TEMP_Sunday;
+                                                }
+                                                if (dayofweek == 1)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Monday =
+                                                        TEMP_Monday;
+                                                }
+                                                if (dayofweek == 2)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Tuesday =
+                                                        TEMP_Tuesday;
+                                                }
+                                                if (dayofweek == 3)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Wednesday =
+                                                        TEMP_Wednesday;
+                                                }
+                                                if (dayofweek == 4)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Thursday =
+                                                        TEMP_Thursday;
+                                                }
+                                                if (dayofweek == 5)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Friday =
+                                                        TEMP_Friday;
+                                                }
+                                                if (dayofweek == 6)
+                                                {
+                                                    _RouteCalender
+                                                            .Find(p => p.TripNr == tripdid).Saterday =
+                                                        TEMP_Saterday;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                _RouteCalender.Add(new CIBusRoutesCalender
+                                                {
+                                                    TripNr = tripdid,
+                                                    Monday = TEMP_Monday,
+                                                    Tuesday = TEMP_Tuesday,
+                                                    Wednesday = TEMP_Wednesday,
+                                                    Thursday = TEMP_Thursday,
+                                                    Friday = TEMP_Friday,
+                                                    Saterday = TEMP_Saterday,
+                                                    Sunday = TEMP_Sunday
+                                                });
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("Route Passing by...");
+                                        }
+                                    }
+                                }
                             }
-                            rdr.Close();
+                        }
+                        rdr.Close();
                     }
-                    
-                    //}
-                    //catch (SqlException)
-                    //{
-                    //    // error here
-                    //}
-                    //finally
-                    //{
-                    //    connection.Close();
-                    //}
                 }
+
+                //}
+                //catch (SqlException)
+                //{
+                //    // error here
+                //}
+                //finally
+                //{
+                //    connection.Close();
+                //}
             }
-            
+
+
             //// Export Stops
             //var Cities = _RoutesDetails.Select(m => new { m. }).Distinct().ToList();
 
@@ -838,15 +851,15 @@ namespace CI_Brasilia
             //// You'll do something else with it, here I write it to a console window
             // Console.WriteLine(text.ToString());
             Console.WriteLine("Export Routes into XML...");
-                // Write the list of objects to a file.
-                System.Xml.Serialization.XmlSerializer writerRoutes =
+            // Write the list of objects to a file.
+            System.Xml.Serialization.XmlSerializer writerRoutes =
                 new System.Xml.Serialization.XmlSerializer(_Routes.GetType());
 
-                System.IO.StreamWriter fileRoutes =
-                    new System.IO.StreamWriter("output\\routes.xml");
+            System.IO.StreamWriter fileRoutes =
+                new System.IO.StreamWriter("output\\routes.xml");
 
-                writerRoutes.Serialize(fileRoutes, _Routes);
-                fileRoutes.Close();
+            writerRoutes.Serialize(fileRoutes, _Routes);
+            fileRoutes.Close();
 
             // Write the list of objects to a file.
             System.Xml.Serialization.XmlSerializer writerRoutesError =
@@ -869,133 +882,133 @@ namespace CI_Brasilia
             fileRoutesNon.Close();
 
             Console.WriteLine("Export Routes Details into XML...");
-                // Write the list of objects to a file.
-                System.Xml.Serialization.XmlSerializer writer =
+            // Write the list of objects to a file.
+            System.Xml.Serialization.XmlSerializer writer =
                 new System.Xml.Serialization.XmlSerializer(_RoutesDetails.GetType());
-                System.IO.StreamWriter file =
-                    new System.IO.StreamWriter("output\\routesdetails.xml");
+            System.IO.StreamWriter file =
+                new System.IO.StreamWriter("output\\routesdetails.xml");
 
-                writer.Serialize(file, _RoutesDetails);
-                file.Close();
+            writer.Serialize(file, _RoutesDetails);
+            file.Close();
 
-                // GTFS Support
+            // GTFS Support
 
-                string gtfsDir = AppDomain.CurrentDomain.BaseDirectory + "\\gtfs";
-                System.IO.Directory.CreateDirectory(gtfsDir);
+            string gtfsDir = AppDomain.CurrentDomain.BaseDirectory + "\\gtfs";
+            System.IO.Directory.CreateDirectory(gtfsDir);
 
-                Console.WriteLine("Creating GTFS Files...");
+            Console.WriteLine("Creating GTFS Files...");
 
-                Console.WriteLine("Creating GTFS File agency.txt...");
-                using (var gtfsagency = new StreamWriter(@"gtfs\\agency.txt"))
+            Console.WriteLine("Creating GTFS File agency.txt...");
+            using (var gtfsagency = new StreamWriter(@"gtfs\\agency.txt"))
+            {
+                var csv = new CsvWriter(gtfsagency);
+                csv.Configuration.Delimiter = ",";
+                csv.Configuration.Encoding = Encoding.UTF8;
+                csv.Configuration.TrimFields = true;
+                // header 
+                csv.WriteField("agency_id");
+                csv.WriteField("agency_name");
+                csv.WriteField("agency_url");
+                csv.WriteField("agency_timezone");
+                csv.WriteField("agency_lang");
+                csv.WriteField("agency_phone");
+                csv.WriteField("agency_fare_url");
+                csv.WriteField("agency_email");
+                csv.NextRecord();
+                csv.WriteField("EC");
+                csv.WriteField("Expreso Brasilia");
+                csv.WriteField("http://www.expresobrasilia.com/");
+                csv.WriteField("America/Bogota");
+                csv.WriteField("ES");
+                csv.WriteField("+57 01 8000 51 8001");
+                csv.WriteField("");
+                csv.WriteField("contactenos@expresobrasilia.com ");
+                csv.NextRecord();
+                csv.WriteField("UN");
+                csv.WriteField("Unitransco");
+                csv.WriteField("http://www.expresobrasilia.com/");
+                csv.WriteField("America/Bogota");
+                csv.WriteField("ES");
+                csv.WriteField("+57 01 8000 51 8001");
+                csv.WriteField("");
+                csv.WriteField("contactenos@expresobrasilia.com ");
+                csv.NextRecord();
+            }
+
+            Console.WriteLine("Creating GTFS File routes.txt ...");
+
+            using (var gtfsroutes = new StreamWriter(@"gtfs\\routes.txt"))
+            {
+                // Route record
+
+
+                var csvroutes = new CsvWriter(gtfsroutes);
+                csvroutes.Configuration.Delimiter = ",";
+                csvroutes.Configuration.Encoding = Encoding.UTF8;
+                csvroutes.Configuration.TrimFields = true;
+                // header 
+                csvroutes.WriteField("route_id");
+                csvroutes.WriteField("agency_id");
+                csvroutes.WriteField("route_short_name");
+                csvroutes.WriteField("route_long_name");
+                csvroutes.WriteField("route_desc");
+                csvroutes.WriteField("route_type");
+                csvroutes.WriteField("route_url");
+                csvroutes.WriteField("route_color");
+                csvroutes.WriteField("route_text_color");
+                csvroutes.NextRecord();
+
+                foreach (CIBusRoutes route in _Routes)
                 {
-                    var csv = new CsvWriter(gtfsagency);
-                    csv.Configuration.Delimiter = ",";
-                    csv.Configuration.Encoding = Encoding.UTF8;
-                    csv.Configuration.TrimFields = true;
-                    // header 
-                    csv.WriteField("agency_id");
-                    csv.WriteField("agency_name");
-                    csv.WriteField("agency_url");
-                    csv.WriteField("agency_timezone");
-                    csv.WriteField("agency_lang");
-                    csv.WriteField("agency_phone");
-                    csv.WriteField("agency_fare_url");
-                    csv.WriteField("agency_email");
-                    csv.NextRecord();
-                    csv.WriteField("EC");
-                    csv.WriteField("Expreso Brasilia");
-                    csv.WriteField("http://www.expresobrasilia.com/");
-                    csv.WriteField("America/Bogota");
-                    csv.WriteField("ES");
-                    csv.WriteField("+57 01 8000 51 8001");
-                    csv.WriteField("");
-                    csv.WriteField("contactenos@expresobrasilia.com ");
-                    csv.NextRecord();
-                    csv.WriteField("UN");
-                    csv.WriteField("Unitransco");
-                    csv.WriteField("http://www.expresobrasilia.com/");
-                    csv.WriteField("America/Bogota");
-                    csv.WriteField("ES");
-                    csv.WriteField("+57 01 8000 51 8001");
-                    csv.WriteField("");
-                    csv.WriteField("contactenos@expresobrasilia.com ");
-                    csv.NextRecord();
-                }
-
-                Console.WriteLine("Creating GTFS File routes.txt ...");
-
-                using (var gtfsroutes = new StreamWriter(@"gtfs\\routes.txt"))
-                {
-                    // Route record
-
-
-                    var csvroutes = new CsvWriter(gtfsroutes);
-                    csvroutes.Configuration.Delimiter = ",";
-                    csvroutes.Configuration.Encoding = Encoding.UTF8;
-                    csvroutes.Configuration.TrimFields = true;
-                    // header 
-                    csvroutes.WriteField("route_id");
-                    csvroutes.WriteField("agency_id");
-                    csvroutes.WriteField("route_short_name");
-                    csvroutes.WriteField("route_long_name");
-                    csvroutes.WriteField("route_desc");
-                    csvroutes.WriteField("route_type");
-                    csvroutes.WriteField("route_url");
-                    csvroutes.WriteField("route_color");
-                    csvroutes.WriteField("route_text_color");
+                    csvroutes.WriteField(route.RutaNr);
+                    csvroutes.WriteField("EC");
+                    csvroutes.WriteField(route.From + " - " + route.To);
+                    csvroutes.WriteField("");
+                    csvroutes.WriteField(
+                        ""); // routes[i].FlightAircraft + ";" + CIFLights[i].FlightAirline + ";" + CIFLights[i].FlightOperator + ";" + CIFLights[i].FlightCodeShare
+                    csvroutes.WriteField(202); // 202 nat 201 inter
+                    csvroutes.WriteField("");
+                    csvroutes.WriteField("");
+                    csvroutes.WriteField("");
                     csvroutes.NextRecord();
-
-                    foreach (CIBusRoutes route in _Routes) {
-                        csvroutes.WriteField(route.RutaNr);
-                        csvroutes.WriteField("EC");
-                        csvroutes.WriteField(route.From + " - " + route.To);
-                        csvroutes.WriteField("");
-                        csvroutes.WriteField(""); // routes[i].FlightAircraft + ";" + CIFLights[i].FlightAirline + ";" + CIFLights[i].FlightOperator + ";" + CIFLights[i].FlightCodeShare
-                        csvroutes.WriteField(202); // 202 nat 201 inter
-                        csvroutes.WriteField("");
-                        csvroutes.WriteField("");
-                        csvroutes.WriteField("");
-                        csvroutes.NextRecord();
-                    }
                 }
+            }
 
-                using (var gtfstrips = new StreamWriter(@"gtfs\\trips.txt"))
+            using (var gtfstrips = new StreamWriter(@"gtfs\\trips.txt"))
+            {
+                var csvtrips = new CsvWriter(gtfstrips);
+                csvtrips.Configuration.Delimiter = ",";
+                csvtrips.Configuration.Encoding = Encoding.UTF8;
+                csvtrips.Configuration.TrimFields = true;
+                // header 
+                csvtrips.WriteField("route_id");
+                csvtrips.WriteField("service_id");
+                csvtrips.WriteField("trip_id");
+                csvtrips.WriteField("trip_headsign");
+                csvtrips.WriteField("trip_short_name");
+                csvtrips.WriteField("direction_id");
+                csvtrips.WriteField("block_id");
+                csvtrips.WriteField("shape_id");
+                csvtrips.WriteField("wheelchair_accessible");
+                csvtrips.WriteField("bikes_allowed ");
+                csvtrips.NextRecord();
+                foreach (var trip in _RoutesDetails)
                 {
-                    var csvtrips = new CsvWriter(gtfstrips);
-                    csvtrips.Configuration.Delimiter = ",";
-                    csvtrips.Configuration.Encoding = Encoding.UTF8;
-                    csvtrips.Configuration.TrimFields = true;
-                    // header 
-                    csvtrips.WriteField("route_id");
-                    csvtrips.WriteField("service_id");
-                    csvtrips.WriteField("trip_id");
-                    csvtrips.WriteField("trip_headsign");
-                    csvtrips.WriteField("trip_short_name");
-                    csvtrips.WriteField("direction_id");
-                    csvtrips.WriteField("block_id");
-                    csvtrips.WriteField("shape_id");
-                    csvtrips.WriteField("wheelchair_accessible");
-                    csvtrips.WriteField("bikes_allowed ");
+                    csvtrips.WriteField(trip.RouteNr.Substring(0, 4));
+                    csvtrips.WriteField(trip.TripNr);
+                    csvtrips.WriteField(trip.TripNr);
+                    csvtrips.WriteField("");
+                    csvtrips.WriteField("");
+                    csvtrips.WriteField("");
+                    csvtrips.WriteField("");
+                    csvtrips.WriteField("");
+                    csvtrips.WriteField("1");
+                    csvtrips.WriteField("");
                     csvtrips.NextRecord();
-                    foreach (var trip in _RoutesDetails)
-                    {
-                        csvtrips.WriteField(trip.RouteNr.Substring(0,4));
-                        csvtrips.WriteField(trip.TripNr);
-                        csvtrips.WriteField(trip.TripNr);
-                        csvtrips.WriteField("");
-                        csvtrips.WriteField("");
-                        csvtrips.WriteField("");
-                        csvtrips.WriteField("");
-                        csvtrips.WriteField("");
-                        csvtrips.WriteField("1");
-                        csvtrips.WriteField("");
-                        csvtrips.NextRecord();
-                    }
-
                 }
+            }
             using (var gtfscalendar = new StreamWriter(@"gtfs\\calendar.txt"))
             {
-
                 var csvcalendar = new CsvWriter(gtfscalendar);
                 csvcalendar.Configuration.Delimiter = ",";
                 csvcalendar.Configuration.Encoding = Encoding.UTF8;
@@ -1124,19 +1137,20 @@ namespace CI_Brasilia
                                     stop_lon = Convert.ToString(AirportResponseJsonFrom[0].stop_lon),
                                     stop_timezone = Convert.ToString(AirportResponseJsonFrom[0].stop_timezone),
                                     stop_url = Convert.ToString(AirportResponseJsonFrom[0].stop_url),
-                                    wheelchair_boarding = Convert.ToString(AirportResponseJsonFrom[0].wheelchair_boarding),
+                                    wheelchair_boarding =
+                                        Convert.ToString(AirportResponseJsonFrom[0].wheelchair_boarding),
                                     zone_id = Convert.ToString(AirportResponseJsonFrom[0].zone_id),
                                     location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
                                     parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type),
                                     orgcity = rdrstoptimes["CIUDADN"].ToString().Trim()
-
                                 });
                                 stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id);
                             }
                         }
                         else
                         {
-                            var stopinfo = _GTFSStops.FirstOrDefault(y => y.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
+                            var stopinfo =
+                                _GTFSStops.FirstOrDefault(y => y.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
                             stop_id = stopinfo.stop_id;
                         }
 
@@ -1221,11 +1235,8 @@ namespace CI_Brasilia
                     csvstops.WriteField(Convert.ToString(GTFSStops.stop_url));
                     csvstops.WriteField(Convert.ToString(GTFSStops.stop_timezone));
                     csvstops.NextRecord();
-                    
                 }
             }
-
-
         }
 
         [Serializable]
@@ -1244,7 +1255,6 @@ namespace CI_Brasilia
             public string stop_timezone { get; set; }
             public string wheelchair_boarding { get; set; }
             public string orgcity { get; set; }
-
         }
 
 
@@ -1286,7 +1296,6 @@ namespace CI_Brasilia
 
             public string RutaNr;
             public int Steps;
-
         }
 
         [Serializable]
@@ -1297,7 +1306,6 @@ namespace CI_Brasilia
             public string RutaNr;
             public string From;
             public string To;
-
         }
 
         [Serializable]
@@ -1317,16 +1325,14 @@ namespace CI_Brasilia
         {
             // Auto-implemented properties. 
             public string TripNr;
-            public Boolean Monday; 
-            public Boolean Tuesday; 
-            public Boolean Wednesday; 
-            public Boolean Thursday; 
-            public Boolean Friday; 
-            public Boolean Saterday; 
+
+            public Boolean Monday;
+            public Boolean Tuesday;
+            public Boolean Wednesday;
+            public Boolean Thursday;
+            public Boolean Friday;
+            public Boolean Saterday;
             public Boolean Sunday;
-
         }
-
     }
 }
-
