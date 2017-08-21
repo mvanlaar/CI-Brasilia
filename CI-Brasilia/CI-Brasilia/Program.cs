@@ -1098,33 +1098,47 @@ namespace CI_Brasilia
                     {
                         // Get the agency and the stop details. Add them to a list.
                         string stop_id;
-                        using (var clientFrom = new WebClient())
+                        // todo: Lookup first to no overload the api.
+
+                        bool GTFSSTopExists =
+                            _GTFSStops.Exists(x => x.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
+                        if (!GTFSSTopExists)
                         {
-                            clientFrom.Encoding = Encoding.UTF8;
-                            clientFrom.Headers.Add("user-agent", ua);
-                            string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus + "EC/" + HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString().Trim());
-                            var jsonapiFrom = clientFrom.DownloadString(urlapiFrom.Replace("+", "%20")); 
-                            dynamic AirportResponseJsonFrom = JsonConvert.DeserializeObject(jsonapiFrom);
-                            _GTFSStops.Add(new GTFSStops
+                            using (var clientFrom = new WebClient())
                             {
-                                stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id),
-                                stop_code = Convert.ToString(AirportResponseJsonFrom[0].stop_code),
-                                stop_name = Convert.ToString(AirportResponseJsonFrom[0].stop_name),
-                                stop_desc = Convert.ToString(AirportResponseJsonFrom[0].stop_desc),
-                                stop_lat = Convert.ToString(AirportResponseJsonFrom[0].stop_lat),
-                                stop_lon = Convert.ToString(AirportResponseJsonFrom[0].stop_lon),
-                                stop_timezone = Convert.ToString(AirportResponseJsonFrom[0].stop_timezone),
-                                stop_url = Convert.ToString(AirportResponseJsonFrom[0].stop_url),
-                                wheelchair_boarding = Convert.ToString(AirportResponseJsonFrom[0].wheelchair_boarding),
-                                zone_id = Convert.ToString(AirportResponseJsonFrom[0].zone_id),
-                                location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
-                                parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type)
-                            });
-                            stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id);
+                                clientFrom.Encoding = Encoding.UTF8;
+                                clientFrom.Headers.Add("user-agent", ua);
+                                string cityname = HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString().Trim());
+                                cityname = cityname.Replace("+", "%20");
+                                string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus +
+                                                    "EC/" + cityname;
+                                var jsonapiFrom = clientFrom.DownloadString(urlapiFrom);
+                                dynamic AirportResponseJsonFrom = JsonConvert.DeserializeObject(jsonapiFrom);
+                                _GTFSStops.Add(new GTFSStops
+                                {
+                                    stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id),
+                                    stop_code = Convert.ToString(AirportResponseJsonFrom[0].stop_code),
+                                    stop_name = Convert.ToString(AirportResponseJsonFrom[0].stop_name),
+                                    stop_desc = Convert.ToString(AirportResponseJsonFrom[0].stop_desc),
+                                    stop_lat = Convert.ToString(AirportResponseJsonFrom[0].stop_lat),
+                                    stop_lon = Convert.ToString(AirportResponseJsonFrom[0].stop_lon),
+                                    stop_timezone = Convert.ToString(AirportResponseJsonFrom[0].stop_timezone),
+                                    stop_url = Convert.ToString(AirportResponseJsonFrom[0].stop_url),
+                                    wheelchair_boarding = Convert.ToString(AirportResponseJsonFrom[0].wheelchair_boarding),
+                                    zone_id = Convert.ToString(AirportResponseJsonFrom[0].zone_id),
+                                    location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
+                                    parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type),
+                                    orgcity = rdrstoptimes["CIUDADN"].ToString().Trim()
+
+                                });
+                                stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id);
+                            }
                         }
-
-
-
+                        else
+                        {
+                            var stopinfo = _GTFSStops.FirstOrDefault(y => y.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
+                            stop_id = stopinfo.stop_id;
+                        }
 
                         int addminutes = (int) rdrstoptimes["MINUTOS"];
 
@@ -1159,7 +1173,7 @@ namespace CI_Brasilia
                             csvstoptimes.WriteField(trip.TripNr);
                             csvstoptimes.WriteField(hour + ":" + strminute + ":00");
                             csvstoptimes.WriteField(hour + ":" + strminute + ":00");
-                            csvstoptimes.WriteField(rdrstoptimes["CIUDADN"].ToString());
+                            csvstoptimes.WriteField(stop_id);
                             csvstoptimes.WriteField(loopnumber.ToString());
                             csvstoptimes.WriteField("");
                             csvstoptimes.WriteField("0");
@@ -1229,6 +1243,7 @@ namespace CI_Brasilia
             public string parent_station { get; set; }
             public string stop_timezone { get; set; }
             public string wheelchair_boarding { get; set; }
+            public string orgcity { get; set; }
 
         }
 
