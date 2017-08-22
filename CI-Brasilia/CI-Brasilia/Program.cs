@@ -962,10 +962,9 @@ namespace CI_Brasilia
                 {
                     csvroutes.WriteField(route.RutaNr);
                     csvroutes.WriteField("EC");
-                    csvroutes.WriteField(route.From + " - " + route.To);
                     csvroutes.WriteField("");
-                    csvroutes.WriteField(
-                        ""); // routes[i].FlightAircraft + ";" + CIFLights[i].FlightAirline + ";" + CIFLights[i].FlightOperator + ";" + CIFLights[i].FlightCodeShare
+                    csvroutes.WriteField(route.From + " - " + route.To);
+                    csvroutes.WriteField(""); 
                     csvroutes.WriteField(202); // 202 nat 201 inter
                     csvroutes.WriteField("");
                     csvroutes.WriteField("");
