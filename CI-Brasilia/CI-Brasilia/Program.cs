@@ -1132,6 +1132,10 @@ namespace CI_Brasilia
                                 clientFrom.Encoding = Encoding.UTF8;
                                 clientFrom.Headers.Add("user-agent", ua);
                                 string cityname = HttpUtility.UrlEncode(citynameapi.Trim());
+                                if (cityname.EndsWith("."))
+                                {
+                                    cityname = cityname.Remove(cityname.Length - 1);
+                                }
                                 cityname = cityname.Replace("+", "%20");
                                 string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus +
                                                     "EC/" + cityname;
