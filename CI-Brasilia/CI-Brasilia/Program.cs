@@ -1112,15 +1112,26 @@ namespace CI_Brasilia
                         string stop_id;
                         // todo: Lookup first to no overload the api.
 
+                        // Check if city and agency name are the same. If not then use agencyname against api.
+                        string citynameapi;
+                        if (rdrstoptimes["CIUDADN"].ToString() == rdrstoptimes["AGENCIAN"].ToString())
+                        {
+                            citynameapi = rdrstoptimes["CIUDADN"].ToString();
+                        }
+                        else
+                        {
+                            citynameapi = rdrstoptimes["AGENCIAN"].ToString();
+                        }
+
                         bool GTFSSTopExists =
-                            _GTFSStops.Exists(x => x.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
+                            _GTFSStops.Exists(x => x.orgcity == citynameapi.Trim());
                         if (!GTFSSTopExists)
                         {
                             using (var clientFrom = new WebClient())
                             {
                                 clientFrom.Encoding = Encoding.UTF8;
                                 clientFrom.Headers.Add("user-agent", ua);
-                                string cityname = HttpUtility.UrlEncode(rdrstoptimes["CIUDADN"].ToString().Trim());
+                                string cityname = HttpUtility.UrlEncode(citynameapi.Trim());
                                 cityname = cityname.Replace("+", "%20");
                                 string urlapiFrom = ConfigurationManager.AppSettings.Get("APIUrl") + APIPathBus +
                                                     "EC/" + cityname;
@@ -1141,7 +1152,7 @@ namespace CI_Brasilia
                                     zone_id = Convert.ToString(AirportResponseJsonFrom[0].zone_id),
                                     location_type = Convert.ToString(AirportResponseJsonFrom[0].location_type),
                                     parent_station = Convert.ToString(AirportResponseJsonFrom[0].location_type),
-                                    orgcity = rdrstoptimes["CIUDADN"].ToString().Trim()
+                                    orgcity = citynameapi.Trim()
                                 });
                                 stop_id = Convert.ToString(AirportResponseJsonFrom[0].stop_id);
                             }
@@ -1149,7 +1160,7 @@ namespace CI_Brasilia
                         else
                         {
                             var stopinfo =
-                                _GTFSStops.FirstOrDefault(y => y.orgcity == rdrstoptimes["CIUDADN"].ToString().Trim());
+                                _GTFSStops.FirstOrDefault(y => y.orgcity == citynameapi.Trim());
                             stop_id = stopinfo.stop_id;
                         }
 
