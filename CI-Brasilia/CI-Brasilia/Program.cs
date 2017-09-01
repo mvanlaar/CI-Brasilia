@@ -320,7 +320,7 @@ namespace CI_Brasilia
                     where[BrasiliaRoutes].ROUTENR=cond.ROUTENR
                     and[BrasiliaRoutes].TRAMOS =cond.TRAMOS
                 
-                        ) AND[BrasiliaRoutes].KILOMETROS = 0                          
+                        ) AND[BrasiliaRoutes].KILOMETROS = 0 AND TRAMOS > 1                         
                     order by ROUTENR, TRAMOS";
 
 
@@ -1093,7 +1093,7 @@ namespace CI_Brasilia
                                             )
                                     AND [BrasiliaRoutes].ROUTENR = '@RouteNr'
                             order by ROUTENR, TRAMOS, KILOMETROS";
-                    stringsql = stringsql.Replace("@RouteNr", trip.RouteNr.Substring(0, 4));
+                    stringsql = stringsql.Replace("@RouteNr", trip.RouteNr);
                     commandstoptimes.CommandText = stringsql;
                     //command.Parameters.AddWithValue("@RouteNr", trip.RouteNr.Substring(0, 4));
                     //try
