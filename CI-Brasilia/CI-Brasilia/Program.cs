@@ -297,7 +297,7 @@ namespace CI_Brasilia
                 {
                     command.Connection = connection; // <== lacking
                     command.CommandType = CommandType.Text;
-                    command.CommandText = @"SELECT DISTINCT[ROUTENR]
+                    command.CommandText = @"SELECT DISTINCT LEFT([ROUTENR],4) AS ROUTENR
                         ,[TRAMOS]
                         ,[EMPRESA]
                         ,[EMPRESAN]
@@ -320,7 +320,7 @@ namespace CI_Brasilia
                     where[BrasiliaRoutes].ROUTENR=cond.ROUTENR
                     and[BrasiliaRoutes].TRAMOS =cond.TRAMOS
                 
-                        ) AND[BrasiliaRoutes].KILOMETROS = 0 AND TRAMOS > 1                         
+                        ) AND[BrasiliaRoutes].KILOMETROS = 0 AND TRAMOS > 1
                     order by ROUTENR, TRAMOS";
 
 
@@ -621,196 +621,201 @@ namespace CI_Brasilia
                                     var doc = new HtmlDocument();
                                     doc.LoadHtml(Stage7);
 
-                                    var routes =
-                                        doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
-
-                                    foreach (var route in routes)
+                                    if (!Stage7.Contains("<h2>ERROR AL REGISTRAR LA TRANSACCIÓN</h2>"))
                                     {
-                                        string routenrwithtime =
-                                            route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        string[] routenrwithtimeparts = routenrwithtime.Split('-');
-                                        String RouteNr = routenrwithtimeparts[0];
-                                        string TimeofDay = routenrwithtimeparts[1];
-                                        RouteNr = RouteNr.Trim();
-                                        TimeofDay = TimeofDay.Trim();
-                                        HtmlNode servicenode = route.SelectSingleNode(
-                                            "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
-                                        String service = servicenode.Attributes["src"].Value;
-                                        int position = service.LastIndexOf('/');
-                                        service = service.Substring(position + 1);
-                                        int fileExtPos = service.LastIndexOf(".");
-                                        if (fileExtPos >= 0)
-                                            service = service.Substring(0, fileExtPos);
 
-                                        // First part if departure
-                                        string daySalida = route
-                                            .SelectSingleNode(
-                                                "./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
-                                            .InnerText.Trim();
-                                        string hourSalida =
-                                            route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        string dayLlegada =
-                                            route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        string hourLlegada =
-                                            route.SelectSingleNode(
-                                                    "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
-                                                .InnerText.Trim();
-                                        DateTime datetimeSalida = DateTime.MinValue;
-                                        string datetimeSalidastring = daySalida + " " + hourSalida;
-                                        datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
-                                            "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                        DateTime datetimeLlegada = DateTime.MinValue;
-                                        string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
-                                        datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
-                                            "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
-                                        string tripdid = RouteNr + TimeofDay;
 
-                                        if (dbroutenr.Substring(0, 4) == RouteNr)
+                                        var routes =
+                                            doc.DocumentNode.SelectNodes("//div[@class='route-widget']");
+
+                                        foreach (var route in routes)
                                         {
-                                            Console.WriteLine("Route found...");
-                                            bool routeExists =
-                                                _Routes.Exists(x => x.RutaNr == RouteNr
-                                                                    && x.From == from
-                                                                    && x.To == to);
-                                            if (!routeExists)
-                                            {
-                                                _Routes.Add(
-                                                    new CIBusRoutes
-                                                    {
-                                                        RutaNr = RouteNr,
-                                                        From = from,
-                                                        To = to
-                                                    });
-                                            }
+                                            string routenrwithtime =
+                                                route.SelectSingleNode(
+                                                        "./div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string[] routenrwithtimeparts = routenrwithtime.Split('-');
+                                            String RouteNr = routenrwithtimeparts[0];
+                                            string TimeofDay = routenrwithtimeparts[1];
+                                            RouteNr = RouteNr.Trim();
+                                            TimeofDay = TimeofDay.Trim();
+                                            HtmlNode servicenode = route.SelectSingleNode(
+                                                "./div[1]/div[1]/div[1]/div[1]/div[2]/img[@src]");
+                                            String service = servicenode.Attributes["src"].Value;
+                                            int position = service.LastIndexOf('/');
+                                            service = service.Substring(position + 1);
+                                            int fileExtPos = service.LastIndexOf(".");
+                                            if (fileExtPos >= 0)
+                                                service = service.Substring(0, fileExtPos);
 
-                                            bool routeDetailsExists =
-                                                _RoutesDetails.Exists(x => x.RouteNr == RouteNr
-                                                                           && x.TripNr == tripdid
-                                                );
-                                            if (!routeDetailsExists)
+                                            // First part if departure
+                                            string daySalida = route
+                                                .SelectSingleNode(
+                                                    "./div[1]/div[1]/div[2]/div[1]/div[1]/h3[1]/span[1]")
+                                                .InnerText.Trim();
+                                            string hourSalida =
+                                                route.SelectSingleNode(
+                                                        "./div[1]/div[1]/div[2]/div[1]/div[2]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string dayLlegada =
+                                                route.SelectSingleNode(
+                                                        "./div[1]/div[1]/div[2]/div[2]/div[1]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            string hourLlegada =
+                                                route.SelectSingleNode(
+                                                        "./div[1]/div[1]/div[2]/div[2]/div[2]/h3[1]/span[1]")
+                                                    .InnerText.Trim();
+                                            DateTime datetimeSalida = DateTime.MinValue;
+                                            string datetimeSalidastring = daySalida + " " + hourSalida;
+                                            datetimeSalida = DateTime.ParseExact(datetimeSalidastring,
+                                                "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                            DateTime datetimeLlegada = DateTime.MinValue;
+                                            string datetimeLlegadaString = dayLlegada + " " + hourLlegada;
+                                            datetimeLlegada = DateTime.ParseExact(datetimeLlegadaString,
+                                                "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture);
+                                            string tripdid = RouteNr + TimeofDay;
+
+                                            if (dbroutenr.Substring(0, 4) == RouteNr)
                                             {
-                                                _RoutesDetails.Add(new CIBusRoutesDetails
+                                                Console.WriteLine("Route found...");
+                                                bool routeExists =
+                                                    _Routes.Exists(x => x.RutaNr == RouteNr
+                                                                        && x.From == from
+                                                                        && x.To == to);
+                                                if (!routeExists)
                                                 {
-                                                    RouteNr = RouteNr,
-                                                    TripNr = tripdid,
-                                                    Salida = datetimeSalida,
-                                                    Llegeda = datetimeLlegada,
-                                                    Service = service
-                                                });
-                                            }
-                                            // Route Calender
-                                            bool routeCalenderExists =
-                                                _RouteCalender.Exists(x => x.TripNr == tripdid
-                                                );
+                                                    _Routes.Add(
+                                                        new CIBusRoutes
+                                                        {
+                                                            RutaNr = RouteNr,
+                                                            From = from,
+                                                            To = to
+                                                        });
+                                                }
 
-                                            Boolean TEMP_Monday = false;
-                                            Boolean TEMP_Tuesday = false;
-                                            Boolean TEMP_Wednesday = false;
-                                            Boolean TEMP_Thursday = false;
-                                            Boolean TEMP_Friday = false;
-                                            Boolean TEMP_Saterday = false;
-                                            Boolean TEMP_Sunday = false;
+                                                bool routeDetailsExists =
+                                                    _RoutesDetails.Exists(x => x.RouteNr == RouteNr
+                                                                               && x.TripNr == tripdid
+                                                    );
+                                                if (!routeDetailsExists)
+                                                {
+                                                    _RoutesDetails.Add(new CIBusRoutesDetails
+                                                    {
+                                                        RouteNr = RouteNr,
+                                                        TripNr = tripdid,
+                                                        Salida = datetimeSalida,
+                                                        Llegeda = datetimeLlegada,
+                                                        Service = service
+                                                    });
+                                                }
+                                                // Route Calender
+                                                bool routeCalenderExists =
+                                                    _RouteCalender.Exists(x => x.TripNr == tripdid
+                                                    );
 
-                                            int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
-                                            if (dayofweek == 0)
-                                            {
-                                                TEMP_Sunday = true;
-                                            }
-                                            if (dayofweek == 1)
-                                            {
-                                                TEMP_Monday = true;
-                                            }
-                                            if (dayofweek == 2)
-                                            {
-                                                TEMP_Tuesday = true;
-                                            }
-                                            if (dayofweek == 3)
-                                            {
-                                                TEMP_Wednesday = true;
-                                            }
-                                            if (dayofweek == 4)
-                                            {
-                                                TEMP_Thursday = true;
-                                            }
-                                            if (dayofweek == 5)
-                                            {
-                                                TEMP_Friday = true;
-                                            }
-                                            if (dayofweek == 6)
-                                            {
-                                                TEMP_Saterday = true;
-                                            }
+                                                Boolean TEMP_Monday = false;
+                                                Boolean TEMP_Tuesday = false;
+                                                Boolean TEMP_Wednesday = false;
+                                                Boolean TEMP_Thursday = false;
+                                                Boolean TEMP_Friday = false;
+                                                Boolean TEMP_Saterday = false;
+                                                Boolean TEMP_Sunday = false;
 
-
-                                            if (routeCalenderExists)
-                                            {
+                                                int dayofweek = Convert.ToInt32(datetimeSalida.DayOfWeek);
                                                 if (dayofweek == 0)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Sunday =
-                                                        TEMP_Sunday;
+                                                    TEMP_Sunday = true;
                                                 }
                                                 if (dayofweek == 1)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Monday =
-                                                        TEMP_Monday;
+                                                    TEMP_Monday = true;
                                                 }
                                                 if (dayofweek == 2)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Tuesday =
-                                                        TEMP_Tuesday;
+                                                    TEMP_Tuesday = true;
                                                 }
                                                 if (dayofweek == 3)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Wednesday =
-                                                        TEMP_Wednesday;
+                                                    TEMP_Wednesday = true;
                                                 }
                                                 if (dayofweek == 4)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Thursday =
-                                                        TEMP_Thursday;
+                                                    TEMP_Thursday = true;
                                                 }
                                                 if (dayofweek == 5)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Friday =
-                                                        TEMP_Friday;
+                                                    TEMP_Friday = true;
                                                 }
                                                 if (dayofweek == 6)
                                                 {
-                                                    _RouteCalender
-                                                            .Find(p => p.TripNr == tripdid).Saterday =
-                                                        TEMP_Saterday;
+                                                    TEMP_Saterday = true;
+                                                }
+
+
+                                                if (routeCalenderExists)
+                                                {
+                                                    if (dayofweek == 0)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Sunday =
+                                                            TEMP_Sunday;
+                                                    }
+                                                    if (dayofweek == 1)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Monday =
+                                                            TEMP_Monday;
+                                                    }
+                                                    if (dayofweek == 2)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Tuesday =
+                                                            TEMP_Tuesday;
+                                                    }
+                                                    if (dayofweek == 3)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Wednesday =
+                                                            TEMP_Wednesday;
+                                                    }
+                                                    if (dayofweek == 4)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Thursday =
+                                                            TEMP_Thursday;
+                                                    }
+                                                    if (dayofweek == 5)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Friday =
+                                                            TEMP_Friday;
+                                                    }
+                                                    if (dayofweek == 6)
+                                                    {
+                                                        _RouteCalender
+                                                                .Find(p => p.TripNr == tripdid).Saterday =
+                                                            TEMP_Saterday;
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    _RouteCalender.Add(new CIBusRoutesCalender
+                                                    {
+                                                        TripNr = tripdid,
+                                                        Monday = TEMP_Monday,
+                                                        Tuesday = TEMP_Tuesday,
+                                                        Wednesday = TEMP_Wednesday,
+                                                        Thursday = TEMP_Thursday,
+                                                        Friday = TEMP_Friday,
+                                                        Saterday = TEMP_Saterday,
+                                                        Sunday = TEMP_Sunday
+                                                    });
                                                 }
                                             }
                                             else
                                             {
-                                                _RouteCalender.Add(new CIBusRoutesCalender
-                                                {
-                                                    TripNr = tripdid,
-                                                    Monday = TEMP_Monday,
-                                                    Tuesday = TEMP_Tuesday,
-                                                    Wednesday = TEMP_Wednesday,
-                                                    Thursday = TEMP_Thursday,
-                                                    Friday = TEMP_Friday,
-                                                    Saterday = TEMP_Saterday,
-                                                    Sunday = TEMP_Sunday
-                                                });
+                                                Console.WriteLine("Route Passing by...");
                                             }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Route Passing by...");
                                         }
                                     }
                                 }
@@ -960,14 +965,23 @@ namespace CI_Brasilia
 
                 foreach (CIBusRoutes route in _Routes)
                 {
+                    // route_id
                     csvroutes.WriteField(route.RutaNr);
+                    // agency_id
                     csvroutes.WriteField("EC");
+                    // route_short_name
                     csvroutes.WriteField("");
+                    // route_long_name
                     csvroutes.WriteField(route.From + " - " + route.To);
-                    csvroutes.WriteField(""); 
+                    // route_desc
+                    csvroutes.WriteField("");
+                    // route_type
                     csvroutes.WriteField(202); // 202 nat 201 inter
+                    // route_url
                     csvroutes.WriteField("");
+                    // route_color
                     csvroutes.WriteField("");
+                    // route_text_color
                     csvroutes.WriteField("");
                     csvroutes.NextRecord();
                 }
@@ -1093,7 +1107,7 @@ namespace CI_Brasilia
                                             )
                                     AND [BrasiliaRoutes].ROUTENR = '@RouteNr'
                             order by ROUTENR, TRAMOS, KILOMETROS";
-                    stringsql = stringsql.Replace("@RouteNr", trip.RouteNr);
+                    stringsql = stringsql.Replace("@RouteNr", trip.RouteNr.Substring(0, 4));
                     commandstoptimes.CommandText = stringsql;
                     //command.Parameters.AddWithValue("@RouteNr", trip.RouteNr.Substring(0, 4));
                     //try
